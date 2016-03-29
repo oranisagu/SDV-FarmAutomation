@@ -13,8 +13,8 @@
   /* the game locations where machines and chests are searched for */
   "LocationsToSearch": "Farm, Greenhouse, FarmHouse, FarmCave",
 
-  /* if the 10 minute updates take too long, set this to true. connecting a chest next to a machine will only work on the next day though. */
-  "SearchOnlyOnceDailyForChests": false,
+  /* should farm buildings be searched for machines as well? */
+  "AddBuildingsToLocations" : true,
 
   /* enable or disable the mod */
   "EnableMod": true

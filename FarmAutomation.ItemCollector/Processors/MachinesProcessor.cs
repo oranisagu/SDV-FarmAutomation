@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FarmAutomation.Common;
 using Microsoft.Xna.Framework;
 using StardewValley;
@@ -12,66 +13,113 @@ namespace FarmAutomation.ItemCollector.Processors
     {
         private readonly List<string> _machineNamesToProcess;
         private readonly List<string> _gameLocationsToSearch;
-        readonly Dictionary<string, Dictionary<Vector2, Chest>> _connectedChestsCache = new Dictionary<string, Dictionary<Vector2, Chest>>();
+        Dictionary<string, Dictionary<Vector2, Chest>> _connectedChestsCache = new Dictionary<string, Dictionary<Vector2, Chest>>();
         private readonly MaterialHelper _materialHelper;
-        private readonly bool _searchOnlyOnceDailyForChests;
 
-        public MachinesProcessor(List<string> machineNamesToProcess, List<string> gameLocationsToSearch, bool searchOnlyOnceDailyForChests)
+        public bool AddBuildingsToLocations { get; set; }
+
+        public MachinesProcessor(List<string> machineNamesToProcess, List<string> gameLocationsToSearch, bool addBuildingsToLocations)
         {
+            AddBuildingsToLocations = addBuildingsToLocations;
             _machineNamesToProcess = machineNamesToProcess;
             _gameLocationsToSearch = gameLocationsToSearch;
-            _searchOnlyOnceDailyForChests = searchOnlyOnceDailyForChests;
-            _gameLocationsToSearch.ForEach(gl=> _connectedChestsCache.Add(gl, new Dictionary<Vector2, Chest>()));
+            _gameLocationsToSearch.ForEach(gl => _connectedChestsCache.Add(gl, new Dictionary<Vector2, Chest>()));
             _materialHelper = new MaterialHelper();
             DailyReset();
         }
 
         public IEnumerable<GameLocation> GetLocations()
         {
-            return _gameLocationsToSearch.Select(Game1.getLocationFromName); //.Concat(Game1.getFarm().buildings.Select(b=>b.indoors));
+            var configuredNames = _gameLocationsToSearch.Select(Game1.getLocationFromName);
+            if (AddBuildingsToLocations)
+            {
+                return configuredNames.Concat(Game1.getFarm().buildings.Select(b => b.indoors)).Where(b=>b!=null);
+            }
+            return configuredNames;
         }
 
-        public void ProcessMachines()
+        private void BuildCacheForLocation(GameLocation gameLocation)
         {
-            foreach (var gameLocation in GetLocations())
+            if (gameLocation != null)
             {
+                var cacheToAdd = new Dictionary<Vector2, Chest>();
+
                 var items = ItemFinder.FindObjectsWithName(gameLocation, _machineNamesToProcess);
                 foreach (var valuePair in items)
                 {
                     Vector2 location = valuePair.Key;
                     Object machine = valuePair.Value;
-                    
-                    Chest chest;
-                    if (_connectedChestsCache[gameLocation.Name].ContainsKey(location))
+                    if (cacheToAdd.ContainsKey(location))
                     {
-                        chest = _connectedChestsCache[gameLocation.Name][location];
-                    }
-                    else
-                    {
-                        chest = ItemFinder.FindConnectedChests(machine, gameLocation);
-                        if (chest != null || _searchOnlyOnceDailyForChests)
-                        {
-                            _connectedChestsCache[gameLocation.Name].Add(location, chest);
-                        }
+                        //already found in another search
+                        continue;
                     }
 
-                    if (chest != null)
+                    var processedLocations = new List<Vector2>();
+                    var chest = ItemFinder.FindConnectedChests(machine, gameLocation, processedLocations);
+                    foreach (var connectedLocation in processedLocations)
                     {
-                        if (MachineIsReady(machine))
+                        cacheToAdd.Add(connectedLocation, chest);
+                    }
+                }
+                lock (_connectedChestsCache)
+                {
+                    if (_connectedChestsCache.ContainsKey(gameLocation.Name))
+                    {
+                        // already ran?
+                        _connectedChestsCache.Remove(gameLocation.Name);
+                    }
+                    _connectedChestsCache.Add(gameLocation.Name, new Dictionary<Vector2, Chest>());
+                    foreach (var cache in cacheToAdd)
+                    {
+                        _connectedChestsCache[gameLocation.Name].Add(cache.Key, cache.Value);
+                    }
+                }
+            }
+        }
+
+        public void ProcessMachines()
+        {
+            if (_connectedChestsCache == null)
+            {
+                _connectedChestsCache = new Dictionary<string, Dictionary<Vector2, Chest>>();
+                Parallel.ForEach(GetLocations(), BuildCacheForLocation);
+            }
+            foreach (var gameLocation in GetLocations())
+            {
+                lock (_connectedChestsCache)
+                {
+                    if (!_connectedChestsCache.ContainsKey(gameLocation.Name))
+                    {
+                        // cache got invalidated
+                        BuildCacheForLocation(gameLocation);
+                    }
+                }
+                foreach (var valuePair in _connectedChestsCache[gameLocation.Name])
+                {
+                    Vector2 location = valuePair.Key;
+                    Chest connectedChest = valuePair.Value;
+                    if (connectedChest == null)
+                    {
+                        // no chest connected
+                        continue;
+                    }
+
+                    var machine = gameLocation.objects[location];
+                    if (MachineIsReady(machine))
+                    {
+                        if (connectedChest.addItem(machine.heldObject) == null)
                         {
-                            if (chest.addItem(machine.heldObject) == null)
-                            {
-                                SetMachineIdle(machine);
-                            }
+                            SetMachineIdle(machine);
                         }
-                        if (machine.minutesUntilReady == 0)
+                    }
+                    if (machine.minutesUntilReady == 0)
+                    {
+                        var refillable = _materialHelper.FindMaterialForMachine(machine.Name, connectedChest);
+                        if (refillable != null)
                         {
-                            var refillable = _materialHelper.FindMaterialForMachine(machine.Name, chest);
-                            if (refillable != null)
-                            {
-                                PutItemInMachine(machine, refillable);
-                                ItemHelper.RemoveItemFromChest(refillable, chest);
-                            }
+                            PutItemInMachine(machine, refillable);
+                            ItemHelper.RemoveItemFromChest(refillable, connectedChest);
                         }
                     }
                 }
@@ -97,9 +145,14 @@ namespace FarmAutomation.ItemCollector.Processors
 
         public void DailyReset()
         {
-            foreach (var cache in _connectedChestsCache)
+            _connectedChestsCache = null;
+        }
+
+        public void InvalidateCacheForLocation(GameLocation location)
+        {
+            if (_connectedChestsCache.ContainsKey(location.Name))
             {
-                cache.Value.Clear();
+                _connectedChestsCache.Remove(location.Name);
             }
         }
     }

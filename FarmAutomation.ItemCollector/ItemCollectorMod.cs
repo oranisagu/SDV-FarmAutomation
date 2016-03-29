@@ -1,16 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
-using StardewValley.Buildings;
-using StardewValley.Objects;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using FarmAutomation.Common;
 using FarmAutomation.ItemCollector.Processors;
-using Microsoft.Xna.Framework.Input;
-using Object = StardewValley.Object;
+using StardewValley;
 
 namespace FarmAutomation.ItemCollector
 {
@@ -28,7 +22,7 @@ namespace FarmAutomation.ItemCollector
             ItemFinder.ConnectorItems = new List<string>(_config.ItemsToConsiderConnectors.Split(',').Select(v => v.Trim()));
             var machinesToCollectFrom = _config.MachinesToCollectFrom.Split(',').Select(v=>v.Trim()).ToList();
             var locationsToSearch = _config.LocationsToSearch.Split(',').Select(v=>v.Trim()).ToList();
-            _machinesProcessor = new MachinesProcessor(machinesToCollectFrom, locationsToSearch, _config.SearchOnlyOnceDailyForChests);
+            _machinesProcessor = new MachinesProcessor(machinesToCollectFrom, locationsToSearch, _config.AddBuildingsToLocations);
             _animalHouseProcessor = new AnimalHouseProcessor(_config.PetAnimals, _config.AdditionalFriendshipFromCollecting);
         }
 
@@ -51,6 +45,13 @@ namespace FarmAutomation.ItemCollector
                 {
                     _animalHouseProcessor.ProcessAnimalBuildings();
                     _machinesProcessor.ProcessMachines();
+                }
+            };
+            PlayerEvents.InventoryChanged += (s, c) =>
+            {
+                if (_gameLoaded && ItemFinder.HaveConnectorsInInventoryChanged(c))
+                {
+                    _machinesProcessor.InvalidateCacheForLocation(Game1.player.currentLocation);
                 }
             };
         }

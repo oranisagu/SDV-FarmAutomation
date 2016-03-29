@@ -3,6 +3,7 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StardewModdingAPI.Events;
 using StardewValley.Objects;
 using Object = StardewValley.Object;
 
@@ -92,6 +93,16 @@ namespace FarmAutomation.Common
             }
             return
                 location.objects.Where(o => locations.Contains(o.Key) && itemNamesToConsider.Contains(o.Value.name));
+        }
+
+        public static bool HaveConnectorsInInventoryChanged(EventArgsInventoryChanged inventoryChange)
+        {
+            var changes = inventoryChange.Added.Concat(inventoryChange.QuantityChanged).Concat(inventoryChange.Removed);
+            if (changes.Any(i => ConnectorItems.Contains(i.Item.Name)))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
