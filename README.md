@@ -4,8 +4,11 @@
 These Mods are still in early development and might have bugs or unintended behaviour. Make sure you backup your safefiles before using them!
 If you have problems, please give feedback over at the [Forums](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931)
 
+## Requirements
+You'll need SMAPI v0.39.0 or higher for these mods to work, see their [GitHub Page](https://github.com/ClxS/SMAPI) for more information
+
 ## Download
-If you want to try the mods, head over to the [Forum Post](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931), for now I'll upload the mods there as zip files until I figure out how to handle this better with GitHub.
+You can download the compiled mods under [latest releases](https://github.com/oranisagu/SDV-FarmAutomation/releases/latest).
 
 ## About the Mods
 The following mods are currently part of this project:
@@ -34,3 +37,8 @@ This mod simply opens and closes the barn doors at configurable times. there is 
 #### Installation
 copy the mod into your Stardew Valley Mods folder and start SMAPI.
 there are some configuration options, though you can probably leave those at their defaults.
+
+## Feedback
+Feedback is very appreciated as there are so many situations I can't account for. If you have problems, consider sending me your savefile so I can look into it.
+
+There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931), where you can leave suggestions or bug reports.
