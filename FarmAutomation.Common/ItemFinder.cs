@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using StardewModdingAPI.Events;
 using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
 using Object = StardewValley.Object;
 
 namespace FarmAutomation.Common
@@ -13,21 +14,17 @@ namespace FarmAutomation.Common
     {
         public static List<string> ConnectorItems { get; set; }
 
+        public static List<int> ConnectorFloorings { get; set; }
+
         public static IEnumerable<Object> FindItemsofType(GameLocation location, Type itemType)
         {
             return location?.objects.Values.Where(o => o.GetType() == itemType);
-        }
-
-        public static IEnumerable<Object> FindItemsWithHeldObjects(GameLocation location)
-        {
-            return location?.objects.Values.Where(o => o.heldObject != null);
         }
 
         public static IEnumerable<KeyValuePair<Vector2, Object>> FindObjectsWithName(GameLocation location, IEnumerable<string> names)
         {
             return location?.objects.Where(o => names.Contains(o.Value.Name));
         }
-
 
         public static Chest FindChestInLocation(GameLocation location)
         {
@@ -38,67 +35,71 @@ namespace FarmAutomation.Common
             return FindItemsofType(location, typeof(Chest)).FirstOrDefault() as Chest;
         }
 
-        public static Chest FindConnectedChests(Object item, GameLocation location, List<Vector2> processedLocations = null)
+        public static void FindConnectedLocations(GameLocation location, Vector2 startPosition,
+            List<ConnectedTile> processedLocations)
         {
-            var itemLocation = item.TileLocation;
-            if (processedLocations == null)
+            var adjecantTiles = GetAdjecantTiles(location, startPosition);
+            foreach (var adjecantTile in adjecantTiles.Where(t=> processedLocations.All(l => l.Location != t)))
             {
-                processedLocations = new List<Vector2>();
-            }
-            processedLocations.Add(itemLocation);
+                if (location.objects.ContainsKey(adjecantTile) && ConnectorItems.Contains(location.objects[adjecantTile].Name))
+                {
+                    var connectedTile = new ConnectedTile
+                    {
+                        Location = adjecantTile,
+                    };
+                    var chest = location.objects[adjecantTile] as Chest;
+                    if (chest != null)
+                    {
+                        connectedTile.Chest = chest;
+                    }
+                    else
+                    {
+                        connectedTile.Object = location.objects[adjecantTile];
+                    }
+                    processedLocations.Add(connectedTile);
+                    FindConnectedLocations(location, adjecantTile, processedLocations);
 
-            var adjecantItems = GetAdjecantItems(location, itemLocation, ConnectorItems).ToList();
-            foreach (var adjecantItem in adjecantItems)
-            {
-                if (processedLocations.Contains(adjecantItem.Key))
-                {
-                    continue;
                 }
-                var chest = adjecantItem.Value as Chest;
-                if (chest != null)
-                {
-                    return chest;
-                }
-                chest = FindConnectedChests(adjecantItem.Value, location, processedLocations);
-                if (chest != null)
-                {
-                    return chest;
-                }
-            }
-            return null;
-        }
-
-        public static IEnumerable<KeyValuePair<Vector2, Object>> GetAdjecantItems(GameLocation location, Vector2 startPosition, List<string> itemNamesToConsider = null )
-        {
-            var locations = new List<Vector2>();
-            for (int x = -1; x <= 1; ++x)
-            {
-                for (int y = -1; y <= 1; ++y)
-                {
-                    var newPosition = new Vector2(startPosition.X + x, startPosition.Y + y);
-                    if (!location.isTileOnMap(newPosition))
+                if (location.terrainFeatures.ContainsKey(adjecantTile)) { 
+                    var feature = location.terrainFeatures[adjecantTile] as Flooring;
+                    if (feature == null)
                     {
                         continue;
                     }
-                    
-                    if (newPosition != startPosition)
+                    if (ConnectorFloorings.Contains(feature.whichFloor))
                     {
-                        locations.Add(newPosition);
+                        processedLocations.Add(new ConnectedTile { Location = adjecantTile });
+                        FindConnectedLocations(location, adjecantTile, processedLocations);
                     }
                 }
             }
-            if (itemNamesToConsider == null)
+        }
+
+
+        private static IEnumerable<Vector2> GetAdjecantTiles(GameLocation location, Vector2 startPosition)
+        {
+            for (int x = -1; x <= 1; ++x)
             {
-                return location.objects.Where(o => locations.Contains(o.Key));
+                for (int y = -1; y<= 1; ++y)
+                {
+                    if (y == x || y == -x)
+                    {
+                        //ignore diagonals
+                        continue;
+                    }
+                    var vector = new Vector2(startPosition.X + x, startPosition.Y + y);
+                    if (vector != startPosition && location.isTileOnMap(vector))
+                    {
+                        yield return vector;
+                    }
+                }
             }
-            return
-                location.objects.Where(o => locations.Contains(o.Key) && itemNamesToConsider.Contains(o.Value.name));
         }
 
         public static bool HaveConnectorsInInventoryChanged(EventArgsInventoryChanged inventoryChange)
         {
             var changes = inventoryChange.Added.Concat(inventoryChange.QuantityChanged).Concat(inventoryChange.Removed);
-            if (changes.Any(i => ConnectorItems.Contains(i.Item.Name)))
+            if (changes.Any(i => ConnectorItems.Contains(i.Item.Name)|| i.Item.category == Object.furnitureCategory))
             {
                 return true;
             }

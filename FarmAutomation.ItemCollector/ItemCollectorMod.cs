@@ -20,6 +20,8 @@ namespace FarmAutomation.ItemCollector
             Log.Info("Initalizing ItemCollector Mod");
             _config = ConfigurationBase.LoadConfiguration<ItemCollectorConfiguration>();
             ItemFinder.ConnectorItems = new List<string>(_config.ItemsToConsiderConnectors.Split(',').Select(v => v.Trim()));
+            ItemFinder.ConnectorFloorings = _config.FlooringsToConsiderConnectors;
+
             var machinesToCollectFrom = _config.MachinesToCollectFrom.Split(',').Select(v=>v.Trim()).ToList();
             var locationsToSearch = _config.LocationsToSearch.Split(',').Select(v=>v.Trim()).ToList();
             _machinesProcessor = new MachinesProcessor(machinesToCollectFrom, locationsToSearch, _config.AddBuildingsToLocations);

@@ -5,7 +5,6 @@ using FarmAutomation.Common;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
-using Object = StardewValley.Object;
 
 namespace FarmAutomation.ItemCollector.Processors
 {
@@ -33,7 +32,7 @@ namespace FarmAutomation.ItemCollector.Processors
             var configuredNames = _gameLocationsToSearch.Select(Game1.getLocationFromName);
             if (AddBuildingsToLocations)
             {
-                return configuredNames.Concat(Game1.getFarm().buildings.Select(b => b.indoors)).Where(b=>b!=null);
+                return configuredNames.Concat(Game1.getFarm().buildings.Select(b => b.indoors)).Where(b => b != null);
             }
             return configuredNames;
         }
@@ -48,18 +47,18 @@ namespace FarmAutomation.ItemCollector.Processors
                 foreach (var valuePair in items)
                 {
                     Vector2 location = valuePair.Key;
-                    Object machine = valuePair.Value;
                     if (cacheToAdd.ContainsKey(location))
                     {
                         //already found in another search
                         continue;
                     }
 
-                    var processedLocations = new List<Vector2>();
-                    var chest = ItemFinder.FindConnectedChests(machine, gameLocation, processedLocations);
-                    foreach (var connectedLocation in processedLocations)
+                    List<ConnectedTile> processedLocations = new List<ConnectedTile>();
+                    ItemFinder.FindConnectedLocations(gameLocation, location, processedLocations);
+                    var chest = processedLocations.FirstOrDefault(c => c.Chest != null)?.Chest;
+                    foreach (var connectedLocation in processedLocations.Where(pl => pl.Object != null))
                     {
-                        cacheToAdd.Add(connectedLocation, chest);
+                        cacheToAdd.Add(connectedLocation.Location, chest);
                     }
                 }
                 lock (_connectedChestsCache)
@@ -104,43 +103,9 @@ namespace FarmAutomation.ItemCollector.Processors
                         // no chest connected
                         continue;
                     }
-
-                    var machine = gameLocation.objects[location];
-                    if (MachineIsReady(machine))
-                    {
-                        if (connectedChest.addItem(machine.heldObject) == null)
-                        {
-                            SetMachineIdle(machine);
-                        }
-                    }
-                    if (machine.minutesUntilReady == 0)
-                    {
-                        var refillable = _materialHelper.FindMaterialForMachine(machine.Name, connectedChest);
-                        if (refillable != null)
-                        {
-                            PutItemInMachine(machine, refillable);
-                            ItemHelper.RemoveItemFromChest(refillable, connectedChest);
-                        }
-                    }
+                    MachineHelper.ProcessMachine(gameLocation.objects[location], connectedChest, _materialHelper);
                 }
             }
-        }
-
-        private bool MachineIsReady(Object machine)
-        {
-            return machine.heldObject != null && machine.minutesUntilReady == 0;
-        }
-
-        private void SetMachineIdle(Object machine)
-        {
-            machine.heldObject = null;
-            machine.readyForHarvest = false;
-            machine.showNextIndex = false;
-        }
-
-        private void PutItemInMachine(Object machine, Object refillable)
-        {
-            machine.performObjectDropInAction(refillable, false, Game1.player);
         }
 
         public void DailyReset()
@@ -150,7 +115,7 @@ namespace FarmAutomation.ItemCollector.Processors
 
         public void InvalidateCacheForLocation(GameLocation location)
         {
-            if (_connectedChestsCache.ContainsKey(location.Name))
+            if (_connectedChestsCache != null && _connectedChestsCache.ContainsKey(location.Name))
             {
                 _connectedChestsCache.Remove(location.Name);
             }

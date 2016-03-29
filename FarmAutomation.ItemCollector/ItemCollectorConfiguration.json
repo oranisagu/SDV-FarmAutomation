@@ -10,11 +10,33 @@
   for example, you can add Fence and Gate if you want those to be considered for connections as well.
   */
   "ItemsToConsiderConnectors": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Chest",
-  /* the game locations where machines and chests are searched for */
+
+  /* the following floor tiles are considered connector. be careful, if you have lots of these floors, your whole farm might connect to the same chest and the mod might
+     accidentally add items to your machines you'd rather keep.
+
+     by default only boardwalks are enabled (few people seem to use them). use these to connect your machines to chests or add another type of flooring of your liking by 
+     adding numbers from below comma separated into the list. For example:
+            "FlooringsToConsiderConnector": { 6, 7, 8 },
+
+     Floor types:
+        wood = 0;
+		    stone = 1;
+		    ghost = 2;
+		    iceTile = 3;
+		    straw = 4;
+		    gravel = 5;
+		    boardwalk = 6;
+		    colored_cobblestone = 7;
+		    cobblestone = 8;
+		    steppingStone = 9;
+    */
+  "FlooringsToConsiderConnector": { 6 },
+
+  /* the names of the game locations where machines are searched for.  */
   "LocationsToSearch": "Farm, Greenhouse, FarmHouse, FarmCave",
 
   /* should farm buildings be searched for machines as well? */
-  "AddBuildingsToLocations" : true,
+  "AddBuildingsToLocations": true,
 
   /* enable or disable the mod */
   "EnableMod": true

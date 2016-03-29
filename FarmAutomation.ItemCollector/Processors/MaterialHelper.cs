@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using StardewValley;
 using StardewValley.Objects;
 using Object = StardewValley.Object;
 
-namespace FarmAutomation.ItemCollector
+namespace FarmAutomation.ItemCollector.Processors
 {
-    class MaterialHelper
+    public class MaterialHelper
     {
         public Object FindMaterialForMachine(string machineName, Chest chest)
         {
@@ -78,15 +74,15 @@ namespace FarmAutomation.ItemCollector
 
         public bool IsPreservesJarMaterial(Item item)
         {
-            return item.category == -79 //Jelly
-                   || item.category == -75 //Pickled
+            return item.category == Object.FruitsCategory
+                   || item.category == Object.VegetableCategory
                 ;
         }
 
         public bool IsKegMaterial(Item i)
         {
-            return i.category == -79 //Wine
-                   || i.category == -75 // Juice
+            return i.category == Object.FruitsCategory
+                   || i.category == Object.VegetableCategory
                    || i.Name == "Wheat"
                    || i.Name == "Hops";
         }

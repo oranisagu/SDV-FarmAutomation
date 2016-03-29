@@ -52,10 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MaterialHelper.cs" />
+    <Compile Include="Processors\MaterialHelper.cs" />
     <Compile Include="Processors\AnimalHouseProcessor.cs" />
     <Compile Include="ItemCollectorConfiguration.cs" />
     <Compile Include="ItemCollectorMod.cs" />
+    <Compile Include="Processors\MachineHelper.cs" />
     <Compile Include="Processors\MachinesProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

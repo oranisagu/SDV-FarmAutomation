@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationBase.cs" />
+    <Compile Include="ConnectedTile.cs" />
     <Compile Include="ItemFinder.cs" />
     <Compile Include="ItemHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
