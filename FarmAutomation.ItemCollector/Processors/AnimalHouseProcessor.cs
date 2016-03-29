@@ -56,16 +56,14 @@ namespace FarmAutomation.ItemCollector.Processors
                 if (building is Coop)
                 {
                     // collect eggs
-                    var collectibles =
-                        building.indoors.Objects.Where(o => _coopCollectibles.Contains(o.Value.name)).ToList();
-
-                    collectibles.ForEach(c =>
+                    CollectItemsFromBuilding(building, chest, _coopCollectibles);
+                    if (PetAnimals)
                     {
-                        if (chest.addItem(c.Value) == null)
+                        foreach (var farmAnimal in ((AnimalHouse)building.indoors).animals)
                         {
-                            building.indoors.Objects.Remove(c.Key);
+                            PetAnimal(farmAnimal.Value);
                         }
-                    });
+                    }
                 }
                 if (building is Barn)
                 {
@@ -84,6 +82,20 @@ namespace FarmAutomation.ItemCollector.Processors
                 }
                 _dayliesDone = true;
             }
+        }
+
+        private void CollectItemsFromBuilding(Building building, Chest chest, List<string> coopCollectibles)
+        {
+            var collectibles =
+                building.indoors.Objects.Where(o => coopCollectibles.Contains(o.Value.name)).ToList();
+
+            collectibles.ForEach(c =>
+            {
+                if (chest.addItem(c.Value) == null)
+                {
+                    building.indoors.Objects.Remove(c.Key);
+                }
+            });
         }
 
         private void PetAnimal(FarmAnimal animal)
