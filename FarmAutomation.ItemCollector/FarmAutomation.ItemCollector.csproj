@@ -79,7 +79,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ItemCollectorConfiguration.json" />
+    <None Include="ItemCollectorConfiguration.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -99,7 +101,8 @@ copy "$(TargetDir)FarmAutomation.Common.dll" "D:\SteamLibrary\SteamApps\common\S
 
 copy /-Y "$(TargetDir)*Configuration.json" "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(ProjectName)\"
 
-copy "$(TargetDir)manifest.json" "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(ProjectName)\"</PostBuildEvent>
+copy "$(TargetDir)manifest.json" "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(ProjectName)\"
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
