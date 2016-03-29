@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmAutomation.BarnDoorAutomation", "FarmAutomation.BarnDoorAutomation\FarmAutomation.BarnDoorAutomation.csproj", "{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmAutomation.Common", "FarmAutomation.Common\FarmAutomation.Common.csproj", "{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmAutomation.ItemCollector", "FarmAutomation.ItemCollector\FarmAutomation.ItemCollector.csproj", "{8325D89E-D329-413D-BFA7-AE6091584601}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}.Debug|x86.Build.0 = Debug|Any CPU
+		{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}.Release|x86.ActiveCfg = Release|Any CPU
+		{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}.Release|x86.Build.0 = Release|Any CPU
+		{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}.Debug|x86.Build.0 = Debug|Any CPU
+		{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}.Release|x86.ActiveCfg = Release|Any CPU
+		{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}.Release|x86.Build.0 = Release|Any CPU
+		{8325D89E-D329-413D-BFA7-AE6091584601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8325D89E-D329-413D-BFA7-AE6091584601}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8325D89E-D329-413D-BFA7-AE6091584601}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8325D89E-D329-413D-BFA7-AE6091584601}.Debug|x86.Build.0 = Debug|Any CPU
+		{8325D89E-D329-413D-BFA7-AE6091584601}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8325D89E-D329-413D-BFA7-AE6091584601}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8325D89E-D329-413D-BFA7-AE6091584601}.Release|x86.ActiveCfg = Release|Any CPU
+		{8325D89E-D329-413D-BFA7-AE6091584601}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

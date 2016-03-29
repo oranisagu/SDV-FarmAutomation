@@ -1,0 +1,21 @@
+{
+  /* if set to true, animals will be petted each day */
+  "PetAnimals": true,
+  /* defaults to 5. the amount of friendship each animal gains when you collect milk/wool from it. */
+  "AdditionalFriendshipFromCollecting": 5,
+
+  /* the machines from which their finished product should automatically be collected. if it's a machine you can put items in, it will also look for items to put in afterwards */
+  "MachinesToCollectFrom": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper",
+  /* these items are considered a connection. if a machine is not connected to a chest (either by being adjecant or by an adjecant machine being connected) nothing will happen.
+  for example, you can add Fence and Gate if you want those to be considered for connections as well.
+  */
+  "ItemsToConsiderConnectors": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Chest",
+  /* the game locations where machines and chests are searched for */
+  "LocationsToSearch": "Farm, Greenhouse, FarmHouse, FarmCave",
+
+  /* if the 10 minute updates take too long, set this to true. connecting a chest next to a machine will only work on the next day though. */
+  "SearchOnlyOnceDailyForChests": false,
+
+  /* enable or disable the mod */
+  "EnableMod": true
+}
