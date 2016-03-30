@@ -140,7 +140,7 @@ namespace FarmAutomation.BarnDoorAutomation
         /// <param name="desiredDoorState">true if the door should be opened, false if it should be closed</param>
         private void SetDoor(Building building, DoorState desiredDoorState)
         {
-            if (IsDoorInDesiredState(building, desiredDoorState))
+            if (!IsDoorInDesiredState(building, desiredDoorState))
             {
                 var vector = new Vector2(
                     building.animalDoor.X + building.tileX,
