@@ -30,7 +30,7 @@
 		    cobblestone = 8;
 		    steppingStone = 9;
     */
-  "FlooringsToConsiderConnector": { 6 },
+  "FlooringsToConsiderConnector": [ 6 ],
 
   /* the names of the game locations where machines are searched for.  */
   "LocationsToSearch": "Farm, Greenhouse, FarmHouse, FarmCave",
