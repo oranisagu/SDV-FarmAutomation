@@ -43,6 +43,11 @@ Feedback is very appreciated as there are so many situations I can't account for
 There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931), where you can leave suggestions or bug reports.
 
 ## Version History
+#### [0.1.2](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.2)
+* Collection of Void Eggs
+* Opening/Closing times for Barn/Coop doors were inverted
+* animals get petted even if no chest is present in the building
+
 #### [0.1.1](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.1)
 the same as 0.1.0-alpha, only updated assembly versions and added the version to the zip files.
 
