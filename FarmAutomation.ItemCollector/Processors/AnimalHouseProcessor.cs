@@ -48,6 +48,14 @@ namespace FarmAutomation.ItemCollector.Processors
             }
             foreach (var building in farm.buildings)
             {
+                if (PetAnimals && building.indoors is AnimalHouse)
+                {
+                    foreach (var farmAnimal in ((AnimalHouse)building.indoors).animals)
+                    {
+                        PetAnimal(farmAnimal.Value);
+                    }
+                }
+
                 var chest = ItemFinder.FindChestInLocation(building.indoors);
                 if (chest == null)
                 {
@@ -57,23 +65,13 @@ namespace FarmAutomation.ItemCollector.Processors
                 {
                     // collect eggs
                     CollectItemsFromBuilding(building, chest, _coopCollectibles);
-                    if (PetAnimals)
-                    {
-                        foreach (var farmAnimal in ((AnimalHouse)building.indoors).animals)
-                        {
-                            PetAnimal(farmAnimal.Value);
-                        }
-                    }
                 }
                 if (building is Barn)
                 {
                     foreach (var animal in ((AnimalHouse) building.indoors).animals.Values)
                     {
                         CollectBarnAnimalProduce(animal, chest);
-                        if (PetAnimals)
-                        {
-                            PetAnimal(animal);
-                        }
+
                     }
                 }
                 if (building.indoors is SlimeHutch)
