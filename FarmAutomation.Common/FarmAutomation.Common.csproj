@@ -9,9 +9,22 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FarmAutomation.Common</RootNamespace>
     <AssemblyName>FarmAutomation.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
+  <Choose>
+    <When Condition="'$(SteamInstallPath)' != ''">
+      <PropertyGroup>
+        <ThirdPartyPath>$(SteamInstallPath)\steamapps\common\Stardew Valley\</ThirdPartyPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <ThirdPartyPath>$(SolutionDir)..\..\ThirdParty\SDV\</ThirdPartyPath>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -47,6 +60,18 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <Choose>
+    <When Condition="'$(SteamInstallPath)' != ''">
+      <PropertyGroup>
+        <SteamPath>$(SteamInstallPath)</SteamPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <SteamPath>..\</SteamPath>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -57,10 +82,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Stardew Valley">
-      <HintPath>D:\SteamLibrary\SteamApps\common\Stardew Valley\Stardew Valley.exe</HintPath>
+      <HintPath>$(ThirdPartyPath)\Stardew Valley.exe</HintPath>
     </Reference>
     <Reference Include="StardewModdingAPI">
-      <HintPath>D:\SteamLibrary\SteamApps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
+      <HintPath>$(ThirdPartyPath)\StardewModdingAPI.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
