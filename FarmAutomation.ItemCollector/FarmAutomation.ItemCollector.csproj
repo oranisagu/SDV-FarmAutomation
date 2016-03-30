@@ -112,7 +112,7 @@ copy "$(TargetPath)" "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(Pro
 
 copy "$(TargetDir)FarmAutomation.Common.dll" "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(ProjectName)\"
 
-copy /-Y "$(TargetDir)*Configuration.json" "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(ProjectName)\"
+copy "$(TargetDir)*Configuration.json" "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(ProjectName)\"
 
 copy "$(TargetDir)manifest.json" "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(ProjectName)\"
 </PostBuildEvent>

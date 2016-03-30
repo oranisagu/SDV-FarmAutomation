@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FarmAutomation.Common;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
 
@@ -58,6 +59,11 @@ namespace FarmAutomation.ItemCollector.Processors
                     var chest = processedLocations.FirstOrDefault(c => c.Chest != null)?.Chest;
                     foreach (var connectedLocation in processedLocations.Where(pl => pl.Object != null))
                     {
+                        if (cacheToAdd.ContainsKey(connectedLocation.Location))
+                        {
+                            Log.Error("an item has been found multiple times while looking for connections. this should not happen");
+                            continue;
+                        }
                         cacheToAdd.Add(connectedLocation.Location, chest);
                     }
                 }
