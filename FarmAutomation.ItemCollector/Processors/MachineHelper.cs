@@ -41,8 +41,8 @@ namespace FarmAutomation.ItemCollector.Processors
             }
             else if (connectedChest.addItem(machine.heldObject) == null)
             {
-                SetMachineIdle(machine);
                 Log.Info("Collected a {0} from your {1}", machine.heldObject.Name, machine.Name);
+                SetMachineIdle(machine);
             }
         }
 
