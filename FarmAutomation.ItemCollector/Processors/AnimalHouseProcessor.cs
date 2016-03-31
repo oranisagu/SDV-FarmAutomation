@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using FarmAutomation.Common;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Objects;
@@ -47,6 +49,7 @@ namespace FarmAutomation.ItemCollector.Processors
             {
                 return;
             }
+            Log.Info("petting animals and processing their buildings to collect items");
             if (PetAnimals)
             {
                 var allAnimals = farm.animals.Values.Concat(farm.buildings.Where(b => b.indoors is AnimalHouse).SelectMany(i => ((AnimalHouse)i.indoors).animals.Values));
@@ -69,6 +72,10 @@ namespace FarmAutomation.ItemCollector.Processors
                 }
                 if (building is Barn)
                 {
+                    foreach (var outsideAnimal in farm.animals.Values.Where(a=> a.home is Barn && a.home == building))
+                    {
+                        CollectBarnAnimalProduce(outsideAnimal, chest);
+                    }
                     foreach (var animal in ((AnimalHouse) building.indoors).animals.Values)
                     {
                         CollectBarnAnimalProduce(animal, chest);
@@ -118,6 +125,10 @@ namespace FarmAutomation.ItemCollector.Processors
                     {
                         // show message that the chest is full
                         return;
+                    }
+                    if (animal.showDifferentTextureWhenReadyForHarvest)
+                    {
+                        animal.sprite.Texture = Game1.content.Load<Texture2D>("Animals\\Sheared" + animal.type);
                     }
                     chest.addItem(
                         new Object(Vector2.Zero, animal.currentProduce, null, false, true, false, false));
