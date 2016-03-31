@@ -29,7 +29,7 @@ namespace FarmAutomation.ItemCollector.Processors
             "Void Egg"
         };
 
-        private bool _dayliesDone;
+        private bool _dailiesDone;
 
         public AnimalHouseProcessor(bool petAnimals, int additionalFriendshipFromCollecting)
         {
@@ -43,20 +43,20 @@ namespace FarmAutomation.ItemCollector.Processors
         public void ProcessAnimalBuildings()
         {
             var farm = Game1.getFarm();
-            if (_dayliesDone)
+            if (_dailiesDone)
             {
                 return;
             }
+            if (PetAnimals)
+            {
+                var allAnimals = farm.animals.Values.Concat(farm.buildings.Where(b => b.indoors is AnimalHouse).SelectMany(i => ((AnimalHouse)i.indoors).animals.Values));
+                foreach (var animal in allAnimals)
+                {
+                    PetAnimal(animal);
+                }
+            }
             foreach (var building in farm.buildings)
             {
-                if (PetAnimals && building.indoors is AnimalHouse)
-                {
-                    foreach (var farmAnimal in ((AnimalHouse)building.indoors).animals)
-                    {
-                        PetAnimal(farmAnimal.Value);
-                    }
-                }
-
                 var chest = ItemFinder.FindChestInLocation(building.indoors);
                 if (chest == null)
                 {
@@ -72,15 +72,14 @@ namespace FarmAutomation.ItemCollector.Processors
                     foreach (var animal in ((AnimalHouse) building.indoors).animals.Values)
                     {
                         CollectBarnAnimalProduce(animal, chest);
-
                     }
                 }
                 if (building.indoors is SlimeHutch)
                 {
                     // collect goop
                 }
-                _dayliesDone = true;
             }
+            _dailiesDone = true;
         }
 
         private void CollectItemsFromBuilding(Building building, Chest chest, List<string> coopCollectibles)
@@ -131,7 +130,7 @@ namespace FarmAutomation.ItemCollector.Processors
 
         public void DailyReset()
         {
-            _dayliesDone = false;
+            _dailiesDone = false;
         }
     }
 }

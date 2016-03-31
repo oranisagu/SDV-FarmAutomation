@@ -88,7 +88,7 @@ namespace FarmAutomation.Common
                         continue;
                     }
                     var vector = new Vector2(startPosition.X + x, startPosition.Y + y);
-                    if (vector != startPosition && location.isTileOnMap(vector))
+                    if (vector != startPosition && LocationHelper.IsTileOnMap(location, vector))
                     {
                         yield return vector;
                     }

@@ -43,6 +43,11 @@ Feedback is very appreciated as there are so many situations I can't account for
 There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931), where you can leave suggestions or bug reports.
 
 ## Version History
+#### [0.1.3](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.3)
+* items at the outer bounds of buildings lead to CTDs because the games internal method for determining if a tile is on the map simply doesn't work. had to rewrite it. this should hopefully fix a lot of the CTDs people had.
+* added the 'Statue of Endless Fortune' to the default machines to collect from
+* if animals leave their house before the first time update per day they were ignored due to no longer being in the building. now all animals, in buildings or on the farm are petted. if an animal sleeps outside, it won't be ignored either anymore.
+
 #### [0.1.2](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.2)
 * Collection of Void Eggs
 * Opening/Closing times for Barn/Coop doors were inverted
