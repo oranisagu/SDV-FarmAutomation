@@ -105,6 +105,7 @@
     <Compile Include="ConnectedTile.cs" />
     <Compile Include="ItemFinder.cs" />
     <Compile Include="ItemHelper.cs" />
+    <Compile Include="ItemQuality.cs" />
     <Compile Include="LocationHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

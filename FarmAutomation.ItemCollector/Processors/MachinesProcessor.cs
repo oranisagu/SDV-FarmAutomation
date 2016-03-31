@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FarmAutomation.Common;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
 
@@ -42,7 +43,7 @@ namespace FarmAutomation.ItemCollector.Processors
             if (gameLocation != null)
             {
                 var cacheToAdd = new Dictionary<Vector2, Chest>();
-
+                Log.Verbose("Starting search for connected locations at {0}", LocationHelper.GetName(gameLocation));
                 var items = ItemFinder.FindObjectsWithName(gameLocation, _machineNamesToProcess);
                 foreach (var valuePair in items)
                 {
@@ -77,6 +78,7 @@ namespace FarmAutomation.ItemCollector.Processors
                         _connectedChestsCache[LocationHelper.GetName(gameLocation)].Add(cache.Key, cache.Value);
                     }
                 }
+                Log.Verbose("Searched your {0} for machines to collect from and found a total of {1} locations to look for", LocationHelper.GetName(gameLocation), _connectedChestsCache[LocationHelper.GetName(gameLocation)].Count);
             }
         }
 
@@ -109,6 +111,10 @@ namespace FarmAutomation.ItemCollector.Processors
                     if (!gameLocation.objects.ContainsKey(location))
                     {
                         // skip connection without objects like floortiles etc
+                        continue;
+                    }
+                    if (!_machineNamesToProcess.Contains(gameLocation.objects[location].Name))
+                    {
                         continue;
                     }
                     MachineHelper.ProcessMachine(gameLocation.objects[location], connectedChest, _materialHelper);

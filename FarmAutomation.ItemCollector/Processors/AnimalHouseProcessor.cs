@@ -49,7 +49,7 @@ namespace FarmAutomation.ItemCollector.Processors
             {
                 return;
             }
-            Log.Info("petting animals and processing their buildings to collect items");
+            Log.Info("Petting animals and processing their buildings to collect items");
             if (PetAnimals)
             {
                 var allAnimals = farm.animals.Values.Concat(farm.buildings.Where(b => b.indoors is AnimalHouse).SelectMany(i => ((AnimalHouse)i.indoors).animals.Values));
@@ -57,6 +57,7 @@ namespace FarmAutomation.ItemCollector.Processors
                 {
                     PetAnimal(animal);
                 }
+                Log.Info("All animals have been petted.");
             }
             foreach (var building in farm.buildings)
             {
@@ -72,18 +73,31 @@ namespace FarmAutomation.ItemCollector.Processors
                 }
                 if (building is Barn)
                 {
+                    int outsideAnimalCount = 0;
                     foreach (var outsideAnimal in farm.animals.Values.Where(a=> a.home is Barn && a.home == building))
                     {
                         CollectBarnAnimalProduce(outsideAnimal, chest);
+                        ++outsideAnimalCount;
                     }
+                    if (outsideAnimalCount > 0)
+                    {
+                        Log.Verbose("Found {0} animals wandering outside. collected their milk or wool and put it in the chest in their {1}", outsideAnimalCount, building.buildingType);
+                    }
+                    int insideAnimalCount = 0;
                     foreach (var animal in ((AnimalHouse) building.indoors).animals.Values)
                     {
                         CollectBarnAnimalProduce(animal, chest);
+                        ++insideAnimalCount;
+                    }
+                    if (insideAnimalCount > 0)
+                    {
+                        Log.Verbose("Found {0} animals in the {1}. Collected their milk or wool and put it in the chest in their home.", insideAnimalCount, building.buildingType);
                     }
                 }
                 if (building.indoors is SlimeHutch)
                 {
                     // collect goop
+                    Log.Info("You have a slime hutch, but unfortunately we cannot collect the slime there yet. This feature will be added in the future.");
                 }
             }
             _dailiesDone = true;
@@ -100,6 +114,7 @@ namespace FarmAutomation.ItemCollector.Processors
                 {
                     building.indoors.Objects.Remove(c.Key);
                 }
+                Log.Verbose("Collected a {0} and put it into the chest in your {1}", c.Value.Name, building.buildingType);
             });
         }
 
@@ -123,6 +138,7 @@ namespace FarmAutomation.ItemCollector.Processors
                 {
                     if (chest.items.Count >= 36)
                     {
+                        Log.Error("A {0} is ready for harvesting it's produce. Unfortunately the chest in it's home is already full.", animal.type);
                         // show message that the chest is full
                         return;
                     }

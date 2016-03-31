@@ -38,6 +38,7 @@ namespace FarmAutomation.ItemCollector
             {
                 if (_config.EnableMod)
                 {
+                    Log.Verbose("It's a new day. Resetting the Item Collector mod");
                     _animalHouseProcessor.DailyReset();
                     _machinesProcessor.DailyReset();
                 }
