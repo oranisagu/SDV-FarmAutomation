@@ -95,12 +95,18 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="xTile, Version=2.0.4.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ThirdPartyPath)Stardew Valley\xTile.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationBase.cs" />
     <Compile Include="ConnectedTile.cs" />
     <Compile Include="ItemFinder.cs" />
     <Compile Include="ItemHelper.cs" />
+    <Compile Include="ItemQuality.cs" />
+    <Compile Include="LocationHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

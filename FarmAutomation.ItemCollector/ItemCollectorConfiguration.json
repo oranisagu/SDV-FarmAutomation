@@ -5,11 +5,11 @@
   "AdditionalFriendshipFromCollecting": 5,
 
   /* the machines from which their finished product should automatically be collected. if it's a machine you can put items in, it will also look for items to put in afterwards */
-  "MachinesToCollectFrom": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper",
+  "MachinesToCollectFrom": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune",
   /* these items are considered a connection. if a machine is not connected to a chest (either by being adjecant or by an adjecant machine being connected) nothing will happen.
   for example, you can add Fence and Gate if you want those to be considered for connections as well.
   */
-  "ItemsToConsiderConnectors": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Chest",
+  "ItemsToConsiderConnectors": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune, Chest",
 
   /* the following floor tiles are considered connector. be careful, if you have lots of these floors, your whole farm might connect to the same chest and the mod might
      accidentally add items to your machines you'd rather keep.
@@ -30,7 +30,7 @@
 		    cobblestone = 8;
 		    steppingStone = 9;
     */
-  "FlooringsToConsiderConnector": { 6 },
+  "FlooringsToConsiderConnectors": [ 6 ],
 
   /* the names of the game locations where machines are searched for.  */
   "LocationsToSearch": "Farm, Greenhouse, FarmHouse, FarmCave",

@@ -1,4 +1,5 @@
 using FarmAutomation.Common;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
 
@@ -18,6 +19,7 @@ namespace FarmAutomation.ItemCollector.Processors
                 if (refillable != null)
                 {
                     PutItemInMachine(machine, refillable);
+                    Log.Info("Refilled your {0} with a {1} of {2} quality. The machine now takes {3} minutes to process", machine.Name, refillable.Name, (ItemQuality)refillable.quality, machine.minutesUntilReady );
                     ItemHelper.RemoveItemFromChest(refillable, connectedChest);
                 }
             }
@@ -35,9 +37,11 @@ namespace FarmAutomation.ItemCollector.Processors
                     machine.readyForHarvest = false;
                     machine.showNextIndex = false;
                 }
+                Log.Info("Collected a {0} from your {1} - the next item will be ready in {2}", machine.heldObject.Name, machine.Name, machine.minutesUntilReady);
             }
             else if (connectedChest.addItem(machine.heldObject) == null)
             {
+                Log.Info("Collected a {0} from your {1}", machine.heldObject.Name, machine.Name);
                 SetMachineIdle(machine);
             }
         }
@@ -50,7 +54,7 @@ namespace FarmAutomation.ItemCollector.Processors
 
         public static bool MachineIsReadyForProcessing(Object machine)
         {
-            return machine.minutesUntilReady == 0 && machine.heldObject == null;
+            return !(machine is Chest) && machine.minutesUntilReady == 0 && machine.heldObject == null;
         }
 
         public static void SetMachineIdle(Object machine)

@@ -66,8 +66,9 @@ namespace FarmAutomation.BarnDoorAutomation
                 return;
             }
             // ignore days when the doors should stay closed
-            if (WillAnimalsStayInside())
+            if (!IgnoreOpeningToday && WillAnimalsStayInside())
             {
+                Log.Verbose("It's either winter or unpleasant weather today, the animals will stay inside. Animal doors won't be opened.");
                 IgnoreOpeningToday = true;
             }
 
@@ -146,7 +147,7 @@ namespace FarmAutomation.BarnDoorAutomation
                     building.animalDoor.X + building.tileX,
                     building.animalDoor.Y + building.tileY
                 );
-                Log.Verbose("setting door to {0} for building {1}", desiredDoorState, building.buildingType);
+                Log.Verbose("Setting door to {0} for building {1}", desiredDoorState, building.buildingType);
                 building.doAction(vector, Game1.player);
             }
         }

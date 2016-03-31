@@ -1,9 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using StardewValley.Objects;
 using Object = StardewValley.Object;
 
 namespace FarmAutomation.Common
 {
+    [DebuggerDisplay("{Location} : {Object.Name} => {Chest.Name}")]
     public class ConnectedTile
     {
         public Object Object { get; set; }
