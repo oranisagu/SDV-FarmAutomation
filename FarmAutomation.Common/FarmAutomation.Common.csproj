@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="ConfigurationBase.cs" />
     <Compile Include="ConnectedTile.cs" />
+    <Compile Include="GhostFarmer.cs" />
     <Compile Include="ItemFinder.cs" />
     <Compile Include="ItemHelper.cs" />
     <Compile Include="ItemQuality.cs" />

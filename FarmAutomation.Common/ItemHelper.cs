@@ -12,6 +12,7 @@ namespace FarmAutomation.Common
             {
                 //used last item of stack - delete from chest
                 chest.items[chest.items.IndexOf(refillable)] = null;
+                chest.items.RemoveAll(i => i == null);
             }
         }
 

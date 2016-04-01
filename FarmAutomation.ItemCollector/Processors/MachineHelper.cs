@@ -16,13 +16,48 @@ namespace FarmAutomation.ItemCollector.Processors
             if (MachineIsReadyForProcessing(machine))
             {
                 var refillable = materialHelper.FindMaterialForMachine(machine.Name, connectedChest);
+                Object coal = null;
+                if (machine.Name == "Furnace")
+                {
+                    coal = materialHelper.FindMaterialForMachine("Coal", connectedChest);
+                    if (coal == null)
+                    {
+                        //no coal to power the furnace
+                        return;
+                    }
+                }
                 if (refillable != null)
                 {
-                    PutItemInMachine(machine, refillable);
-                    Log.Info("Refilled your {0} with a {1} of {2} quality. The machine now takes {3} minutes to process", machine.Name, refillable.Name, (ItemQuality)refillable.quality, machine.minutesUntilReady );
-                    ItemHelper.RemoveItemFromChest(refillable, connectedChest);
+                    Farmer who = GhostFarmer.CreateFarmer();
+
+                    // furnace needs an additional coal
+                    if (machine.Name == "Furnace")
+                    {
+                        var coalAmount = materialHelper.GetMaterialAmountForMachine(machine.Name, coal);
+                        MoveItemToFarmer(coal, connectedChest, who, coalAmount);
+                        ItemHelper.RemoveItemFromChest(coal, connectedChest, coalAmount);
+                    }
+
+                    var materialAmount = materialHelper.GetMaterialAmountForMachine(machine.Name, refillable);
+                    var tempRefillable = MoveItemToFarmer(refillable, connectedChest, who, materialAmount);
+
+                    if (!PutItemInMachine(machine, tempRefillable, who) && who.items.Count > 0)
+                    {
+                        // item was not accepted by the machine, transfer it back to the chest
+                        who.items.ForEach(i => connectedChest.addItem(i));
+                    }
+                    Log.Info("Refilled your {0} with a {1} of {2} quality. The machine now takes {3} minutes to process. You have {4} {1} left", machine.Name, refillable.Name, (ItemQuality)refillable.quality, machine.minutesUntilReady, refillable.Stack);
                 }
             }
+        }
+
+        private static Object MoveItemToFarmer(Object itemToMove, Chest sourceChest, Farmer target, int amount)
+        {
+            var temporaryItem = (Object)itemToMove.getOne();
+            temporaryItem.Stack = amount;
+            target.items.Add(temporaryItem);
+            ItemHelper.RemoveItemFromChest(itemToMove, sourceChest, amount);
+            return temporaryItem;
         }
 
         public static void HandleFinishedObjectInMachine(Object machine, Chest connectedChest)
@@ -64,9 +99,13 @@ namespace FarmAutomation.ItemCollector.Processors
             machine.showNextIndex = false;
         }
 
-        public static void PutItemInMachine(Object machine, Object refillable)
+        public static bool PutItemInMachine(Object machine, Object refillable, Farmer who = null)
         {
-            machine.performObjectDropInAction(refillable, false, Game1.player);
+            if (who == null)
+            {
+                who = Game1.player;
+            }
+            return machine.performObjectDropInAction(refillable, false, who);
         }
     }
 }

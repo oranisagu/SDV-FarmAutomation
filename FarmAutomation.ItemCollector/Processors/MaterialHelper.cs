@@ -7,6 +7,13 @@ namespace FarmAutomation.ItemCollector.Processors
 {
     public class MaterialHelper
     {
+        private readonly int[] _ores = {
+            Object.copper,
+            Object.iron,
+            Object.gold,
+            Object.iridium
+        };
+
         public Object FindMaterialForMachine(string machineName, Chest chest)
         {
             if (chest == null)
@@ -21,18 +28,64 @@ namespace FarmAutomation.ItemCollector.Processors
                 case "Preserves Jar":
                     return (Object)chest.items.FirstOrDefault(i => i is Object && IsPreservesJarMaterial(i));
                 case "Cheese Press":
-                    return (Object) chest.items.FirstOrDefault(i => i is Object && IsCheesePressMaterial(i));
+                    return (Object)chest.items.FirstOrDefault(i => i is Object && IsCheesePressMaterial(i));
                 case "Mayonnaise Machine":
-                    return (Object) chest.items.FirstOrDefault(i => i is Object && IsMayonnaiseMachineMaterial(i));
+                    return (Object)chest.items.FirstOrDefault(i => i is Object && IsMayonnaiseMachineMaterial(i));
                 case "Loom":
-                    return (Object) chest.items.FirstOrDefault(i => i is Object && IsLoomMaterial(i));
+                    return (Object)chest.items.FirstOrDefault(i => i is Object && IsLoomMaterial(i));
                 case "Oil Maker":
-                    return (Object) chest.items.FirstOrDefault(i => i is Object && IsOilMakerMaterial(i));
+                    return (Object)chest.items.FirstOrDefault(i => i is Object && IsOilMakerMaterial(i));
                 case "Recycling Machine":
-                    return (Object) chest.items.FirstOrDefault(i => i is Object && IsRecyclingMachineMaterial(i));
+                    return (Object)chest.items.FirstOrDefault(i => i is Object && IsRecyclingMachineMaterial(i));
+                case "Furnace":
+                    return (Object)chest.items.FirstOrDefault(i => i is Object && IsFurnaceMaterial(i));
+                case "Coal":
+                    return (Object)chest.items.FirstOrDefault(i => i is Object && i.parentSheetIndex == Object.coal);
+                case "Seed Maker":
+                    return (Object)chest.items.FirstOrDefault(i => i is Object && IsSeedMakerMaterial(i));
                 default:
                     return null;
             }
+        }
+
+        private bool IsSeedMakerMaterial(Item item)
+        {
+            return item.category == Object.VegetableCategory 
+                || item.category == Object.GreensCategory 
+                || item.category == Object.FruitsCategory
+                || item.category == Object.flowersCategory;
+        }
+
+        /// <summary>
+        /// most machines only take 1 object, a few exceptions have to be handled though
+        /// </summary>
+        /// <param name="machineName"></param>
+        /// <param name="material"></param>
+        /// <returns></returns>
+        public int GetMaterialAmountForMachine(string machineName, Object material)
+        {
+            if (machineName == "Furnace" && material.parentSheetIndex != Object.coal && material.parentSheetIndex != Object.quartzIndex)
+            {
+                return 5;
+            }
+            if (machineName == "Slime Egg-Press" && material.Name == "Slime")
+            {
+                return 100;
+            }
+            return 1;
+        }
+
+        private bool IsFurnaceMaterial(Item item)
+        {
+            if (item.parentSheetIndex == Object.quartzIndex)
+            {
+                return true;
+            }
+            if (_ores.Contains(item.parentSheetIndex) && item.Stack >= 5)
+            {
+                return true;
+            }
+            return false;
         }
 
         public bool IsRecyclingMachineMaterial(Item item)
