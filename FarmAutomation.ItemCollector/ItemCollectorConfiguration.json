@@ -19,16 +19,16 @@
             "FlooringsToConsiderConnector": { 6, 7, 8 },
 
      Floor types:
-        wood = 0;
-		    stone = 1;
-		    ghost = 2;
-		    iceTile = 3;
-		    straw = 4;
-		    gravel = 5;
-		    boardwalk = 6;
-		    colored_cobblestone = 7;
-		    cobblestone = 8;
-		    steppingStone = 9;
+      Wood Floor = 0;
+      Stone Floor = 1;
+      Weathered Floor = 2;
+      Crystal Floor = 3;
+      Straw Floor = 4;
+      Gravel Path = 5;
+      Wood Path = 6;
+      Crystal Path = 7;
+      Cobblestone Path = 8;
+      Stepping Stone Path = 9;
     */
   "FlooringsToConsiderConnectors": [ 6 ],
 
