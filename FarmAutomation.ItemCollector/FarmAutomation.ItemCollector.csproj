@@ -55,7 +55,7 @@
     <OutputPath>bin\x86\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -69,9 +69,11 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Stardew Valley">
       <HintPath>$(ThirdPartyPath)\Stardew Valley.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="StardewModdingAPI">
       <HintPath>$(ThirdPartyPath)\StardewModdingAPI.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -107,15 +109,25 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>mkdir "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(ProjectName)\"
-copy "$(TargetPath)" "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(ProjectName)\"
+    <PostBuildEvent>cd $(SolutionDir)
+CALL powershell "start-process powershell.exe -ArgumentList '.\CopyModsToGameDir.ps1', '$(ThirdPartyPath)', '$(ProjectName)', '$(TargetDir)'"
 
-copy "$(TargetDir)FarmAutomation.Common.dll" "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(ProjectName)\"
-
-copy "$(TargetDir)*Configuration.json" "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(ProjectName)\"
-
-copy "$(TargetDir)manifest.json" "D:\SteamLibrary\SteamApps\common\Stardew Valley\Mods\$(ProjectName)\"
+IF "$(ConfigurationName)" == "Release" CALL powershell "start-process powershell.exe -ArgumentList '.\CreateReleaseZip.ps1', '$(TargetDir)', '$(ProjectName)-v@(VersionNumber)', '.\releases\'"
 </PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="PostBuildMacros">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+    <ItemGroup>
+      <VersionNumber Include="@(Targets->'%(Version)')" />
+    </ItemGroup>
+  </Target>
+  <PropertyGroup>
+    <PostBuildEventDependsOn>
+    $(PostBuildEventDependsOn);
+    PostBuildMacros;
+  </PostBuildEventDependsOn>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
