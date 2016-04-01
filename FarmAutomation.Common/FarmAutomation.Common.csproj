@@ -14,14 +14,14 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <Choose>
-    <When Condition="'$(SteamInstallPath)' != ''">
+    <When Condition="'$(StardewValleyInstallDir)' != ''">
       <PropertyGroup>
-        <ThirdPartyPath>$(SteamInstallPath)\steamapps\common\Stardew Valley\</ThirdPartyPath>
+        <StardewValleyDirectory>$(StardewValleyInstallDir)</StardewValleyDirectory>
       </PropertyGroup>
     </When>
     <Otherwise>
       <PropertyGroup>
-        <ThirdPartyPath>$(SolutionDir)..\..\ThirdParty\SDV\</ThirdPartyPath>
+        <StardewValleyDirectory>$(SolutionDir)\..\ThirdParty\SDV</StardewValleyDirectory>
       </PropertyGroup>
     </Otherwise>
   </Choose>
@@ -44,7 +44,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -52,7 +52,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>none</DebugType>
@@ -76,30 +76,33 @@
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Stardew Valley">
-      <HintPath>$(ThirdPartyPath)\Stardew Valley.exe</HintPath>
+      <HintPath>$(StardewValleyDirectory)\Stardew Valley.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="StardewModdingAPI">
-      <HintPath>$(ThirdPartyPath)\StardewModdingAPI.exe</HintPath>
+      <HintPath>$(StardewValleyDirectory)\StardewModdingAPI.exe</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="xTile, Version=2.0.4.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ThirdPartyPath)Stardew Valley\xTile.dll</HintPath>
+      <HintPath>$(StardewValleyDirectory)\xTile.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

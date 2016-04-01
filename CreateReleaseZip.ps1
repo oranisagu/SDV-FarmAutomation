@@ -6,21 +6,20 @@ param (
 
 function ZipFiles( $zipfilename, $sourcedir )
 {
-   Add-Type -Assembly System.IO.Compression.FileSystem
-   Write-Host "Zipfile: " $zipfilename
-   Write-Host "Directory: "$sourcedir
-   $compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
-   [System.IO.Compression.ZipFile]::CreateFromDirectory($sourcedir,
-        $zipfilename, $compressionLevel, $false)
+	Add-Type -Assembly System.IO.Compression.FileSystem
+	Write-Host "Creating zipfile $($zipfilename) of directory $($sourcedir)"
+	$compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
+	[System.IO.Compression.ZipFile]::CreateFromDirectory($sourcedir, $zipfilename, $compressionLevel, $true)
 }
 $zippath = -join($ZipTarget, $ZipName, ".zip")
+
 if (Test-Path $zippath)
 {
-	rm $zippath
+	Remove-Item $zippath
 }
 if (!(Test-Path $ZipTarget))
 {
-	mkdir $ZipTarget
+	New-Item $ZipTarget -ItemType Directory
 }
 
 ZipFiles -zipfilename $zippath -sourcedir $DirectoryToZip

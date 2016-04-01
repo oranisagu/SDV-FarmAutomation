@@ -1,17 +1,18 @@
 param (
-[string]$GameFolder,
-[string]$ModName,
+[string]$ModFolder,
 [string]$BuildOutput
 )
 
-$modfolder = -join($GameFolder, "\Mods\", $ModName)
-
-Write-Host $modfolder
-
-if ((Test-Path $modfolder))
+if ((Test-Path $ModFolder))
 {
-	rm -r $modfolder
+	Remove-Item $ModFolder\* -Recurse
+} 
+else
+{
+	New-Item $ModFolder -ItemType Directory
 }
-mkdir $modfolder
 $files = -join($BuildOutput, "\*")
-copy $files $modfolder
+#copy $files $modfolder
+
+$exclude = @('*.pdb','Lidgren.Network.dll', 'Newtonsoft.Json.dll', 'xTile.dll', 'Steamworks.NET.dll')
+Copy-Item $files $ModFolder -Recurse -Force -Exclude $exclude

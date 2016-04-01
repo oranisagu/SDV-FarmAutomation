@@ -14,14 +14,26 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <Choose>
-    <When Condition="'$(SteamInstallPath)' != ''">
+    <When Condition="'$(StardewValleyInstallDir)' != ''">
       <PropertyGroup>
-        <ThirdPartyPath>$(SteamInstallPath)\steamapps\common\Stardew Valley\</ThirdPartyPath>
+        <StardewValleyDirectory>$(StardewValleyInstallDir)</StardewValleyDirectory>
       </PropertyGroup>
     </When>
     <Otherwise>
       <PropertyGroup>
-        <ThirdPartyPath>$(SolutionDir)..\..\ThirdParty\SDV\</ThirdPartyPath>
+        <StardewValleyDirectory>$(SolutionDir)\..\ThirdParty\SDV</StardewValleyDirectory>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Choose>
+    <When Condition="'$(StardewValleyModDir)' != ''">
+      <PropertyGroup>
+        <ModFolder>$(StardewValleyModDir)\</ModFolder>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <ModFolder>%AppData%\StardewValley\Mods\</ModFolder>
       </PropertyGroup>
     </Otherwise>
   </Choose>
@@ -44,7 +56,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -52,7 +64,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>none</DebugType>
@@ -64,25 +76,25 @@
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Stardew Valley">
-      <HintPath>$(ThirdPartyPath)\Stardew Valley.exe</HintPath>
+      <HintPath>$(StardewValleyDirectory)\Stardew Valley.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="StardewModdingAPI">
-      <HintPath>$(ThirdPartyPath)\StardewModdingAPI.exe</HintPath>
+      <HintPath>$(StardewValleyDirectory)\StardewModdingAPI.exe</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="xTile, Version=2.0.4.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BarnDoorAutomationMod.cs" />
@@ -103,15 +115,15 @@
     <ProjectReference Include="..\FarmAutomation.Common\FarmAutomation.Common.csproj">
       <Project>{8a052c45-0a0b-4cb2-acb5-fce08a9e3904}</Project>
       <Name>FarmAutomation.Common</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cd $(SolutionDir)
-CALL powershell "start-process powershell.exe -ArgumentList '.\copyModsToGameDir.ps1', '$(ThirdPartyPath)', '$(ProjectName)', '$(TargetDir)'"
+%25WINDIR%25\SysNative\WindowsPowerShell\v1.0\powershell.exe -Command ".\copyModsToGameDir.ps1 '$(ModFolder)$(ProjectName)' '$(TargetDir)'"
 
-IF "$(ConfigurationName)" == "Release" CALL powershell "start-process powershell.exe -ArgumentList '.\CreateReleaseZip.ps1', '$(TargetDir)', '$(ProjectName)-v@(VersionNumber)', '.\releases\'"
-</PostBuildEvent>
+IF "$(ConfigurationName)" == "Release" CALL %25WINDIR%25\SysNative\WindowsPowerShell\v1.0\powershell.exe -Command ".\CreateReleaseZip.ps1 '$(ModFolder)$(Projectname)' '$(ProjectName)-v@(VersionNumber)' '.\releases\'"</PostBuildEvent>
   </PropertyGroup>
   <Target Name="PostBuildMacros">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
