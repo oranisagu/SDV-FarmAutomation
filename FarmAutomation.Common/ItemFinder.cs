@@ -39,7 +39,7 @@ namespace FarmAutomation.Common
             List<ConnectedTile> processedLocations)
         {
             var adjecantTiles = GetAdjecantTiles(location, startPosition);
-            foreach (var adjecantTile in adjecantTiles.Where(t=> processedLocations.All(l => l.Location != t)))
+            foreach (var adjecantTile in adjecantTiles.Where(t => processedLocations.All(l => l.Location != t)))
             {
                 if (location.objects.ContainsKey(adjecantTile) && ConnectorItems.Contains(location.objects[adjecantTile].Name))
                 {
@@ -60,7 +60,8 @@ namespace FarmAutomation.Common
                     FindConnectedLocations(location, adjecantTile, processedLocations);
 
                 }
-                if (location.terrainFeatures.ContainsKey(adjecantTile)) { 
+                else if (location.terrainFeatures.ContainsKey(adjecantTile))
+                {
                     var feature = location.terrainFeatures[adjecantTile] as Flooring;
                     if (feature == null)
                     {
@@ -80,7 +81,7 @@ namespace FarmAutomation.Common
         {
             for (int x = -1; x <= 1; ++x)
             {
-                for (int y = -1; y<= 1; ++y)
+                for (int y = -1; y <= 1; ++y)
                 {
                     if (y == x || y == -x)
                     {
@@ -99,7 +100,7 @@ namespace FarmAutomation.Common
         public static bool HaveConnectorsInInventoryChanged(EventArgsInventoryChanged inventoryChange)
         {
             var changes = inventoryChange.Added.Concat(inventoryChange.QuantityChanged).Concat(inventoryChange.Removed);
-            if (changes.Any(i => ConnectorItems.Contains(i.Item.Name)|| i.Item.category == Object.furnitureCategory))
+            if (changes.Any(i => ConnectorItems.Contains(i.Item.Name) || i.Item.category == Object.furnitureCategory))
             {
                 return true;
             }

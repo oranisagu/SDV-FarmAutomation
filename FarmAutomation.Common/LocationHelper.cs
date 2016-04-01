@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using StardewValley;
 
@@ -25,8 +21,6 @@ namespace FarmAutomation.Common
             {
                 return true;
             }
-            //if (position.X >= 0.0 && position.X <= location.map.Layers[0].LayerWidth && position.Y >= 0.0)
-            //    return position.Y <= location.map.Layers[0].LayerHeight;
             return false;
     }
     }
