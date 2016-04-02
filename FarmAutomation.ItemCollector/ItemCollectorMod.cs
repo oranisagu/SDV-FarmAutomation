@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FarmAutomation.Common;
 using FarmAutomation.ItemCollector.Processors;
+using Microsoft.Xna.Framework.Input;
 using StardewValley;
 
 namespace FarmAutomation.ItemCollector
@@ -74,6 +75,22 @@ namespace FarmAutomation.ItemCollector
                     }
                 }
             };
+#if DEBUG
+            // allow keypresses to initiate events for easier debugging.
+            ControlEvents.KeyPressed += (s, c) =>
+            {
+                if (_gameLoaded && c.KeyPressed == Keys.K)
+                {
+                    _animalHouseProcessor.ProcessAnimalBuildings();
+                    _machinesProcessor.ProcessMachines();
+                }
+                if (_gameLoaded && c.KeyPressed == Keys.P)
+                {
+                    _animalHouseProcessor.DailyReset();
+                    _machinesProcessor.DailyReset();
+                }
+            };
+#endif
         }
     }
 }
