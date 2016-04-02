@@ -43,6 +43,19 @@ Feedback is very appreciated as there are so many situations I can't account for
 There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931), where you can leave suggestions or bug reports.
 
 ## Version History
+#### [0.1.5](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.5)
+* Added Statue of Perfection, Charcoal Kiln and Crab Pots to the supported machines
+* Dinosaur Eggs should now be collected as well
+* Added a Configuration option for muting animals in the morning. Mutes by default
+* various Bugfixes with machines which would not be filled but produced after a set time (Tappers, Statues, Crab Pots etc). They should now work correctly (before they only started working again after picking them up or sleeping)
+
+#### [0.1.4](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.4)
+* Seedmaker and Furnace are now supported
+* Barn animals which are outside their homes now get sheared/milked
+* added lots of logging for easier debugging
+* if a machine or chest was on a floortile (which was configured as a connector) the mod stopped working
+* updated names for floortiles in the configuration comments
+
 #### [0.1.3](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.3)
 * items at the outer bounds of buildings lead to CTDs because the games internal method for determining if a tile is on the map simply doesn't work. had to rewrite it. this should hopefully fix a lot of the CTDs people had.
 * added the 'Statue of Endless Fortune' to the default machines to collect from
