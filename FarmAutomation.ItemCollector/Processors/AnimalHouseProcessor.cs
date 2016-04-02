@@ -28,19 +28,22 @@ namespace FarmAutomation.ItemCollector.Processors
             "Wool",
             "Duck Feather",
             "Rabbits Foot",
-            "Void Egg"
+            "Void Egg",
+            "Dinosaur Egg"
         };
 
         private bool _dailiesDone;
 
-        public AnimalHouseProcessor(bool petAnimals, int additionalFriendshipFromCollecting)
+        public AnimalHouseProcessor(bool petAnimals, int additionalFriendshipFromCollecting, bool muteWhenCollecting)
         {
             PetAnimals = petAnimals;
             AdditionalFriendshipFromCollecting = additionalFriendshipFromCollecting;
+            MuteWhenCollecting = muteWhenCollecting;
         }
 
         public bool PetAnimals { get; set; }
         public int AdditionalFriendshipFromCollecting { get; set; }
+        public bool MuteWhenCollecting { get; set; }
 
         public void ProcessAnimalBuildings()
         {
@@ -49,7 +52,10 @@ namespace FarmAutomation.ItemCollector.Processors
             {
                 return;
             }
-            SoundHelper.MuteTemporary(2000);
+            if (MuteWhenCollecting)
+            {
+                SoundHelper.MuteTemporary(2000);
+            }
             Log.Info("Petting animals and processing their buildings to collect items");
             if (PetAnimals)
             {

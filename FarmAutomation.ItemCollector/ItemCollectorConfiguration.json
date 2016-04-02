@@ -4,12 +4,15 @@
   /* defaults to 5. the amount of friendship each animal gains when you collect milk/wool from it. */
   "AdditionalFriendshipFromCollecting": 5,
 
+  /* check this if you want the sound to be muted when all animals get processed. if you turn this off, there will be quite a cacaphony of bleats, moos and clucks. */
+  "MuteAnimalsWhenCollecting" : true,
+
   /* the machines from which their finished product should automatically be collected. if it's a machine you can put items in, it will also look for items to put in afterwards */
-  "MachinesToCollectFrom": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune, Furnace, Seed Maker",
+  "MachinesToCollectFrom": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune, Furnace, Seed Maker, Statue of Perfection, Crab Pot, Charcoal Kiln",
   /* these items are considered a connection. if a machine is not connected to a chest (either by being adjecant or by an adjecant machine being connected) nothing will happen.
   for example, you can add Fence and Gate if you want those to be considered for connections as well.
   */
-  "ItemsToConsiderConnectors": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune, Furnace, Seed Maker, Chest",
+  "ItemsToConsiderConnectors": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune, Furnace, Seed Maker, Statue of Perfection, Crab Pot, Charcoal Kiln, Chest",
 
   /* the following floor tiles are considered connector. be careful, if you have lots of these floors, your whole farm might connect to the same chest and the mod might
      accidentally add items to your machines you'd rather keep.

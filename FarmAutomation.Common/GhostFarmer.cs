@@ -9,17 +9,24 @@ namespace FarmAutomation.Common
     public class GhostFarmer : Farmer
     {
         public new bool IsMainPlayer => true;
-        
+
         private GhostFarmer()
         {
-            items = new List<Item>();
+            ClearInventory();
+            sprite = Game1.player.sprite;
+            maxItems = 24;
+        }
+
+        public void ClearInventory()
+        {
+            items = new List<Item>(new Item[maxItems]);
         }
 
         /// <summary>
         /// need to override the constructor as for some reason the base sets the sprites on the main player which leads to a crash.
         /// </summary>
         /// <returns></returns>
-        public static Farmer CreateFarmer()
+        public static GhostFarmer CreateFarmer()
         {
             var prevSprite = Game1.player.sprite;
             var who = new GhostFarmer();

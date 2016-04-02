@@ -43,9 +43,18 @@ namespace FarmAutomation.ItemCollector.Processors
                     return (Object)chest.items.FirstOrDefault(i => i is Object && i.parentSheetIndex == Object.coal);
                 case "Seed Maker":
                     return (Object)chest.items.FirstOrDefault(i => i is Object && IsSeedMakerMaterial(i));
+                case "Crab Pot":
+                    return (Object)chest.items.FirstOrDefault(i => i is Object && IsCrabPotMaterial(i));
+                case "Charcoal Kiln":
+                    return (Object)chest.items.FirstOrDefault(i => i is Object && i.parentSheetIndex == Object.wood);
                 default:
                     return null;
             }
+        }
+
+        private bool IsCrabPotMaterial(Item item)
+        {
+            return item.category == Object.baitCategory;
         }
 
         private bool IsSeedMakerMaterial(Item item)
@@ -71,6 +80,10 @@ namespace FarmAutomation.ItemCollector.Processors
             if (machineName == "Slime Egg-Press" && material.Name == "Slime")
             {
                 return 100;
+            }
+            if (machineName == "Charcoal Kiln" && material.parentSheetIndex == Object.wood)
+            {
+                return 20;
             }
             return 1;
         }

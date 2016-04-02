@@ -8,6 +8,7 @@ namespace FarmAutomation.ItemCollector
 
         public bool PetAnimals { get; set; }
         public int AdditionalFriendshipFromCollecting { get; set; }
+        public bool MuteAnimalsWhenCollecting { get; set; }
 
         public string MachinesToCollectFrom { get; set; }
         public string ItemsToConsiderConnectors { get; set; }
