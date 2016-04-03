@@ -83,7 +83,13 @@ namespace FarmAutomation.ItemCollector.Processors
         {
             var logMessage = $"Collecting a {machine.heldObject?.Name} from your {machine.Name}.";
             machine.checkForAction(Who);
-            Who.items.ForEach(i => connectedChest.addItem(i));
+            Who.items.ForEach(i =>
+            {
+                if (i != null)
+                {
+                    connectedChest.addItem(i);
+                }
+            });
 
             if (machine.heldObject != null && machine.minutesUntilReady > 0)
             {
