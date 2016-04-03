@@ -19,7 +19,7 @@ namespace FarmAutomation.ItemCollector
 
         public ItemCollectorMod()
         {
-            Log.Info("Initalizing ItemCollector Mod");
+            Log.Info($"Initalizing {nameof(ItemCollectorMod)}");
             _config = ConfigurationBase.LoadConfiguration<ItemCollectorConfiguration>();
             ItemFinder.ConnectorItems = new List<string>(_config.ItemsToConsiderConnectors.Split(',').Select(v => v.Trim()));
             ItemFinder.ConnectorFloorings = _config.FlooringsToConsiderConnectors;
@@ -39,7 +39,7 @@ namespace FarmAutomation.ItemCollector
             {
                 if (_config.EnableMod)
                 {
-                    Log.Verbose("It's a new day. Resetting the Item Collector mod");
+                    Log.Debug("It's a new day. Resetting the Item Collector mod");
                     _animalHouseProcessor.DailyReset();
                     _machinesProcessor.DailyReset();
                 }
@@ -56,7 +56,7 @@ namespace FarmAutomation.ItemCollector
                     }
                     catch (Exception ex)
                     {
-                        Log.Error("an error occured with the automation mod: {0}", ex);
+                        Log.Error($"an error occured with the automation mod: {ex}");
                     }
                 }
             };
@@ -71,7 +71,7 @@ namespace FarmAutomation.ItemCollector
                     }
                     catch (Exception ex)
                     {
-                        Log.Error("an error occured with the automation mod: {0}", ex);
+                        Log.Error($"an error occured with the automation mod: {ex}");
                     }
                 }
             };

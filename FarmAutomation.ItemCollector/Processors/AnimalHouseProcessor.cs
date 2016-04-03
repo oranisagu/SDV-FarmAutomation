@@ -88,7 +88,7 @@ namespace FarmAutomation.ItemCollector.Processors
                     }
                     if (outsideAnimalCount > 0)
                     {
-                        Log.Verbose("Found {0} animals wandering outside. collected their milk or wool and put it in the chest in their {1}", outsideAnimalCount, building.buildingType);
+                        Log.Debug($"Found {outsideAnimalCount} animals wandering outside. collected their milk or wool and put it in the chest in their {building.buildingType}");
                     }
                     int insideAnimalCount = 0;
                     foreach (var animal in ((AnimalHouse) building.indoors).animals.Values)
@@ -98,7 +98,7 @@ namespace FarmAutomation.ItemCollector.Processors
                     }
                     if (insideAnimalCount > 0)
                     {
-                        Log.Verbose("Found {0} animals in the {1}. Collected their milk or wool and put it in the chest in their home.", insideAnimalCount, building.buildingType);
+                        Log.Debug($"Found {insideAnimalCount} animals in the {building.buildingType}. Collected their milk or wool and put it in the chest in their home.");
                     }
                 }
                 if (building.indoors is SlimeHutch)
@@ -121,7 +121,7 @@ namespace FarmAutomation.ItemCollector.Processors
                 {
                     building.indoors.Objects.Remove(c.Key);
                 }
-                Log.Verbose("Collected a {0} and put it into the chest in your {1}", c.Value.Name, building.buildingType);
+                Log.Debug($"Collected a {c.Value.Name} and put it into the chest in your {building.buildingType}");
             });
         }
 
@@ -145,7 +145,7 @@ namespace FarmAutomation.ItemCollector.Processors
                 {
                     if (chest.items.Count >= 36)
                     {
-                        Log.Error("A {0} is ready for harvesting it's produce. Unfortunately the chest in it's home is already full.", animal.type);
+                        Log.Error($"A {animal.type} is ready for harvesting it's produce. Unfortunately the chest in it's home is already full.");
                         // show message that the chest is full
                         return;
                     }

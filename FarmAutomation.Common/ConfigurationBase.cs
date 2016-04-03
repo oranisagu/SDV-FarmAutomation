@@ -14,7 +14,7 @@ namespace FarmAutomation.Common
 
         public static T LoadConfiguration<T>() where T : ConfigurationBase
         {
-            Log.Info("Loading configuration for {0}", typeof(T).Name);
+            Log.Info($"Loading configuration for {typeof(T).Name}");
             _configPath = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) + Path.DirectorySeparatorChar + typeof(T).Name + ".json";
             T config = LoadConfig<T>();
             if (config == null)
@@ -38,7 +38,7 @@ namespace FarmAutomation.Common
                 }
                 catch (Exception ex)
                 {
-                    Log.Error("Configuration load failed: {0}", ex);
+                    Log.Error($"Configuration load failed: {ex}");
                 }
             }
             return default(T);

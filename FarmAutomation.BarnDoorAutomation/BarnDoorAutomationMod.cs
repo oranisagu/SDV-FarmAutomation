@@ -31,7 +31,7 @@ namespace FarmAutomation.BarnDoorAutomation
         /// </summary>
         public BarnDoorAutomationMod()
         {
-            Log.Info("Initalizing BarnDoorAutomation Mod");
+            Log.Info($"Initalizing {nameof(BarnDoorAutomationMod)}");
             _config = ConfigurationBase.LoadConfiguration<BarnDoorAutomationConfiguration>();
         }
 
@@ -68,7 +68,7 @@ namespace FarmAutomation.BarnDoorAutomation
             // ignore days when the doors should stay closed
             if (!IgnoreOpeningToday && WillAnimalsStayInside())
             {
-                Log.Verbose("It's either winter or unpleasant weather today, the animals will stay inside. Animal doors won't be opened.");
+                Log.Debug("It's either winter or unpleasant weather today, the animals will stay inside. Animal doors won't be opened.");
                 IgnoreOpeningToday = true;
             }
 
@@ -82,7 +82,7 @@ namespace FarmAutomation.BarnDoorAutomation
                 if (SkipSpringDay())
                 {
                     IgnoreOpeningToday = true;
-                    Log.Verbose("Skipping door opening for first {0} days in spring", _config.FirstDayInSpringToOpen);
+                    Log.Debug($"Skipping door opening for first {_config.FirstDayInSpringToOpen} days in spring");
                     return;
                 }
                 SetAllDoors(DoorState.Open);
@@ -122,7 +122,7 @@ namespace FarmAutomation.BarnDoorAutomation
                 // skip buildings still in construction
                 if (building.daysOfConstructionLeft > 0)
                 {
-                    Log.Verbose("Skipping {0} because it's in construction", building.buildingType);
+                    Log.Debug($"Skipping {building.buildingType} because it's in construction");
                     return;
                 }
 
@@ -147,7 +147,7 @@ namespace FarmAutomation.BarnDoorAutomation
                     building.animalDoor.X + building.tileX,
                     building.animalDoor.Y + building.tileY
                 );
-                Log.Verbose("Setting door to {0} for building {1}", desiredDoorState, building.buildingType);
+                Log.Debug($"Setting door to {desiredDoorState} for building {building.buildingType}");
                 building.doAction(vector, Game1.player);
             }
         }

@@ -55,7 +55,7 @@ namespace FarmAutomation.ItemCollector.Processors
                         Who.items.ForEach(i => connectedChest.addItem(i));
                     }
                     Who.ClearInventory();
-                    Log.Info("Refilled your {0} with a {1} of {2} quality. The machine now takes {3} minutes to process. You have {4} {1} left", machine.Name, refillable.Name, (ItemQuality)refillable.quality, machine.minutesUntilReady, refillable.Stack);
+                    Log.Info($"Refilled your {machine.Name} with a {refillable.Name} of {(ItemQuality)refillable.quality} quality. The machine now takes {machine.minutesUntilReady} minutes to process. You have {refillable.Stack} {refillable.Name} left");
                 }
             }
         }
@@ -74,7 +74,13 @@ namespace FarmAutomation.ItemCollector.Processors
         {
             var logMessage = $"Collecting a {machine.heldObject?.Name} from your {machine.Name}.";
             machine.checkForAction(Who);
-            Who.items.ForEach(i => connectedChest.addItem(i));
+            Who.items.ForEach(i =>
+            {
+                if (i != null)
+                {
+                    connectedChest.addItem(i);
+                }
+            });
 
             if (machine.heldObject != null && machine.minutesUntilReady > 0)
             {

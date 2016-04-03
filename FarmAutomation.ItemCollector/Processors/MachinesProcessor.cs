@@ -43,7 +43,7 @@ namespace FarmAutomation.ItemCollector.Processors
             if (gameLocation != null)
             {
                 var cacheToAdd = new Dictionary<Vector2, Chest>();
-                Log.Verbose("Starting search for connected locations at {0}", LocationHelper.GetName(gameLocation));
+                Log.Debug($"Starting search for connected locations at {LocationHelper.GetName(gameLocation)}");
                 var items = ItemFinder.FindObjectsWithName(gameLocation, _machineNamesToProcess);
                 foreach (var valuePair in items)
                 {
@@ -78,7 +78,7 @@ namespace FarmAutomation.ItemCollector.Processors
                         _connectedChestsCache[LocationHelper.GetName(gameLocation)].Add(cache.Key, cache.Value);
                     }
                 }
-                Log.Verbose("Searched your {0} for machines to collect from and found a total of {1} locations to look for", LocationHelper.GetName(gameLocation), _connectedChestsCache[LocationHelper.GetName(gameLocation)].Count);
+                Log.Debug($"Searched your {LocationHelper.GetName(gameLocation)} for machines to collect from and found a total of {_connectedChestsCache[LocationHelper.GetName(gameLocation)].Count} locations to look for");
             }
         }
 
