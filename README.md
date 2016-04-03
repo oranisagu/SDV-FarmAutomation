@@ -43,6 +43,11 @@ Feedback is very appreciated as there are so many situations I can't account for
 There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931), where you can leave suggestions or bug reports.
 
 ## Version History
+#### [0.1.6](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.6)
+* Updated logging to the SMAPI 0.39.6 variant.
+* added Mushroom Box & Lightning Rod
+* Bugfix where some items didn't get placed in the chests anymore.
+
 #### [0.1.5](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.5)
 * Added Statue of Perfection, Charcoal Kiln and Crab Pots to the supported machines
 * Dinosaur Eggs should now be collected as well
