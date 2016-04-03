@@ -119,6 +119,7 @@
     <Compile Include="Configuration\Configurator.cs" />
     <Compile Include="ConnectedTile.cs" />
     <Compile Include="GhostFarmer.cs" />
+    <Compile Include="Interfaces\IItemHelper.cs" />
     <Compile Include="Interfaces\IFarmerFactory.cs" />
     <Compile Include="Interfaces\ILocationHelper.cs" />
     <Compile Include="Interfaces\IItemFinderConfiguration.cs" />

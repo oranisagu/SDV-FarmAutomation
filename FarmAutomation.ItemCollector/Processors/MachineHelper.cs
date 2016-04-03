@@ -12,15 +12,17 @@ namespace FarmAutomation.ItemCollector.Processors
         private readonly IMaterialHelper _materialHelper;
         private readonly ILog _logger;
         private readonly IFarmerFactory _factory;
+        private readonly IItemHelper _itemHelper;
         private GhostFarmer _who;
 
         private GhostFarmer Who => _who ?? (_who = _factory.CreateFarmer());
 
-        public MachineHelper(IMaterialHelper materialHelper, ILog logger, IFarmerFactory factory)
+        public MachineHelper(IMaterialHelper materialHelper, ILog logger, IFarmerFactory factory, IItemHelper itemHelper)
         {
             _materialHelper = materialHelper;
             _logger = logger;
             _factory = factory;
+            _itemHelper = itemHelper;
         }
 
         public void ProcessMachine(Object machine, Chest connectedChest)
@@ -75,7 +77,7 @@ namespace FarmAutomation.ItemCollector.Processors
             temporaryItem.Stack = amount;
             var freeIndex = target.items.IndexOf(null);
             target.items[freeIndex] = temporaryItem;
-            ItemHelper.RemoveItemFromChest(itemToMove, sourceChest, amount);
+            _itemHelper.RemoveItemFromChest(itemToMove, sourceChest, amount);
             return temporaryItem;
         }
 
@@ -99,19 +101,19 @@ namespace FarmAutomation.ItemCollector.Processors
             Log.Info(logMessage);
         }
 
-        public static bool MachineIsReadyForHarvest(Object machine)
+        public bool MachineIsReadyForHarvest(Object machine)
         {
             return machine.readyForHarvest;
         }
 
 
-        public static bool MachineIsReadyForProcessing(Object machine)
+        public bool MachineIsReadyForProcessing(Object machine)
         {
             return !(machine is Chest) && machine.minutesUntilReady == 0 && machine.heldObject == null;
         }
 
 
-        public static bool PutItemInMachine(Object machine, Object refillable, Farmer who)
+        public bool PutItemInMachine(Object machine, Object refillable, Farmer who)
         {
             return machine.performObjectDropInAction(refillable, false, who);
         }

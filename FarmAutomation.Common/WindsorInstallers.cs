@@ -17,6 +17,7 @@ namespace FarmAutomation.Common
             container.Register(Component.For<ILog>().ImplementedBy<Logger>());
             container.Register(Component.For<ILocationHelper>().ImplementedBy<LocationHelper>());
             container.Register(Component.For<ISoundHelper>().ImplementedBy<SoundHelper>());
+            container.Register(Component.For<IItemHelper>().ImplementedBy<ItemHelper>());
         }
     }
 }

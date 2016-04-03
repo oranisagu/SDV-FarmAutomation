@@ -10,7 +10,7 @@ namespace FarmAutomation.Common.Configuration
     class Configurator : IConfigurator
     {
         private readonly ILog _logger;
-        private static string _configPath;
+        private string _configPath;
 
         public Configurator(ILog logger)
         {

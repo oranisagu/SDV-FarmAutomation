@@ -122,7 +122,7 @@ namespace FarmAutomation.BarnDoorAutomation
         /// check if the animals will stay inside
         /// </summary>
         /// <returns>true if the animals won't leave their buildings today</returns>
-        private static bool WillAnimalsStayInside()
+        private bool WillAnimalsStayInside()
         {
             return Game1.IsWinter | Game1.isRaining | Game1.isLightning;
         }
