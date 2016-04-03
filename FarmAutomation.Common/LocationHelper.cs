@@ -1,27 +1,23 @@
-﻿using System;
+﻿using FarmAutomation.Common.Interfaces;
 using Microsoft.Xna.Framework;
 using StardewValley;
 
 namespace FarmAutomation.Common
 {
-    public class LocationHelper
+    public class LocationHelper : ILocationHelper
     {
-        public static String GetName(GameLocation location)
+        public string GetName(GameLocation location)
         {
             return location.uniqueName ?? location.Name;
         }
 
-        public static bool IsTileOnMap(GameLocation location, Vector2 position)
+        public bool IsTileOnMap(GameLocation location, Vector2 position)
         {
             if (location.Objects.ContainsKey(position))
             {
                 return true;
             }
-            if (location.terrainFeatures.ContainsKey(position))
-            {
-                return true;
-            }
-            return false;
-    }
+            return location.terrainFeatures.ContainsKey(position);
+        }
     }
 }

@@ -1,21 +1,27 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using FarmAutomation.Common.Interfaces;
 using Newtonsoft.Json;
 using StardewModdingAPI;
 
-namespace FarmAutomation.Common
+namespace FarmAutomation.Common.Configuration
 {
-    public abstract class ConfigurationBase
+    class Configurator : IConfigurator
     {
+        private readonly ILog _logger;
         private static string _configPath;
 
-        public bool EnableMod { get; set; }
-
-        public static T LoadConfiguration<T>() where T : ConfigurationBase
+        public Configurator(ILog logger)
         {
-            Log.Info("Loading configuration for {0}", typeof(T).Name);
-            _configPath = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) + Path.DirectorySeparatorChar + typeof(T).Name + ".json";
+            _logger = logger;
+        }
+
+        public T LoadConfiguration<T>() where T : ConfigurationBase
+        {
+            _logger.Info($"Loading configuration for {typeof (T).Name}");
+            _configPath = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) + Path.DirectorySeparatorChar +
+                          typeof (T).Name + ".json";
             T config = LoadConfig<T>();
             if (config == null)
             {
@@ -27,7 +33,7 @@ namespace FarmAutomation.Common
             return config;
         }
 
-        private static T LoadConfig<T>()
+        private T LoadConfig<T>()
         {
             if (File.Exists(_configPath))
             {
@@ -38,12 +44,11 @@ namespace FarmAutomation.Common
                 }
                 catch (Exception ex)
                 {
-                    Log.Error("Configuration load failed: {0}", ex);
+                    Log.Error($"Configuration load failed: {ex}");
                 }
             }
             return default(T);
         }
-
-        public abstract void InitializeDefaults();
     }
 }
+

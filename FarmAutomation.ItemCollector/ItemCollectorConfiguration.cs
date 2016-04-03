@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
-using FarmAutomation.Common;
+using System.Linq;
+using FarmAutomation.Common.Configuration;
+using FarmAutomation.Common.Interfaces;
+using FarmAutomation.ItemCollector.Interfaces;
 
 namespace FarmAutomation.ItemCollector
 {
-    public class ItemCollectorConfiguration : ConfigurationBase
+    public class ItemCollectorConfiguration : ConfigurationBase, IItemFinderConfiguration, IAnimalHouseProcessorConfiguration, IMachinesProcessorConfiguration
     {
 
         public bool PetAnimals { get; set; }
@@ -21,6 +24,11 @@ namespace FarmAutomation.ItemCollector
             FlooringsToConsiderConnectors = new List<int>();
         }
 
+        public List<string> GetConnectorItems()
+        {
+            return new List<string>(ItemsToConsiderConnectors.Split(',').Select(v => v.Trim()));
+        }
+
         public override void InitializeDefaults()
         {
             PetAnimals = true;
@@ -31,6 +39,16 @@ namespace FarmAutomation.ItemCollector
             LocationsToSearch = "Farm, Greenhouse, FarmHouse, FarmCave";
             FlooringsToConsiderConnectors = new List<int> {6};
             AddBuildingsToLocations = true;
+        }
+
+        public List<string> GetMachineNamesToProcess()
+        {
+            return MachinesToCollectFrom.Split(',').Select(m => m.Trim()).ToList();
+        }
+
+        public List<string> GetLocationsToSearch()
+        {
+            return LocationsToSearch.Split(',').Select(v => v.Trim()).ToList();
         }
     }
 }

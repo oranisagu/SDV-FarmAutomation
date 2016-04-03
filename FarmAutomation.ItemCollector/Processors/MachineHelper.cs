@@ -1,20 +1,29 @@
 using FarmAutomation.Common;
+using FarmAutomation.Common.Interfaces;
+using FarmAutomation.ItemCollector.Interfaces;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
 
 namespace FarmAutomation.ItemCollector.Processors
 {
-    public static class MachineHelper
+    public class MachineHelper : IMachineHelper
     {
-        private static readonly GhostFarmer Who;
+        private readonly IMaterialHelper _materialHelper;
+        private readonly ILog _logger;
+        private readonly IFarmerFactory _factory;
+        private GhostFarmer _who;
 
-        static MachineHelper()
+        private GhostFarmer Who => _who ?? (_who = _factory.CreateFarmer());
+
+        public MachineHelper(IMaterialHelper materialHelper, ILog logger, IFarmerFactory factory)
         {
-            Who = GhostFarmer.CreateFarmer();
+            _materialHelper = materialHelper;
+            _logger = logger;
+            _factory = factory;
         }
 
-        public static void ProcessMachine(Object machine, Chest connectedChest, MaterialHelper materialHelper)
+        public void ProcessMachine(Object machine, Chest connectedChest)
         {
             if (MachineIsReadyForHarvest(machine))
             {
@@ -22,11 +31,11 @@ namespace FarmAutomation.ItemCollector.Processors
             }
             if (MachineIsReadyForProcessing(machine))
             {
-                var refillable = materialHelper.FindMaterialForMachine(machine.Name, connectedChest);
+                var refillable = _materialHelper.FindMaterialForMachine(machine.Name, connectedChest);
                 Object coal = null;
                 if (machine.Name == "Furnace")
                 {
-                    coal = materialHelper.FindMaterialForMachine("Coal", connectedChest);
+                    coal = _materialHelper.FindMaterialForMachine("Coal", connectedChest);
                     if (coal == null)
                     {
                         //no coal to power the furnace
@@ -38,11 +47,11 @@ namespace FarmAutomation.ItemCollector.Processors
                     // furnace needs an additional coal
                     if (machine.Name == "Furnace")
                     {
-                        var coalAmount = materialHelper.GetMaterialAmountForMachine(machine.Name, coal);
+                        var coalAmount = _materialHelper.GetMaterialAmountForMachine(machine.Name, coal);
                         MoveItemToFarmer(coal, connectedChest, Who, coalAmount);
                     }
 
-                    var materialAmount = materialHelper.GetMaterialAmountForMachine(machine.Name, refillable);
+                    var materialAmount = _materialHelper.GetMaterialAmountForMachine(machine.Name, refillable);
                     if (materialAmount > refillable.Stack)
                     {
                         return;
@@ -55,12 +64,12 @@ namespace FarmAutomation.ItemCollector.Processors
                         Who.items.ForEach(i => connectedChest.addItem(i));
                     }
                     Who.ClearInventory();
-                    Log.Info("Refilled your {0} with a {1} of {2} quality. The machine now takes {3} minutes to process. You have {4} {1} left", machine.Name, refillable.Name, (ItemQuality)refillable.quality, machine.minutesUntilReady, refillable.Stack);
+                    _logger.Info($"Refilled your {machine.Name} with a {refillable.Name} of {(ItemQuality)refillable.quality} quality. The machine now takes {machine.minutesUntilReady} minutes to process. You have {refillable.Stack} {refillable.Name} left");
                 }
             }
         }
 
-        private static Object MoveItemToFarmer(Object itemToMove, Chest sourceChest, Farmer target, int amount)
+        private Object MoveItemToFarmer(Object itemToMove, Chest sourceChest, Farmer target, int amount)
         {
             var temporaryItem = (Object)itemToMove.getOne();
             temporaryItem.Stack = amount;
@@ -70,7 +79,7 @@ namespace FarmAutomation.ItemCollector.Processors
             return temporaryItem;
         }
 
-        public static void HandleFinishedObjectInMachine(Object machine, Chest connectedChest)
+        public void HandleFinishedObjectInMachine(Object machine, Chest connectedChest)
         {
             var logMessage = $"Collecting a {machine.heldObject?.Name} from your {machine.Name}.";
             machine.checkForAction(Who);

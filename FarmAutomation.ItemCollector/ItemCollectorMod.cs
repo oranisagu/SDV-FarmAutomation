@@ -1,10 +1,11 @@
 ﻿using System;
+using Castle.MicroKernel.Registration;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using System.Collections.Generic;
-using System.Linq;
+using Castle.Windsor;
 using FarmAutomation.Common;
-using FarmAutomation.ItemCollector.Processors;
+using FarmAutomation.Common.Interfaces;
+using FarmAutomation.ItemCollector.Interfaces;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
 
@@ -13,21 +14,39 @@ namespace FarmAutomation.ItemCollector
     public class ItemCollectorMod : Mod
     {
         private bool _gameLoaded;
-        private readonly MachinesProcessor _machinesProcessor;
-        private readonly AnimalHouseProcessor _animalHouseProcessor;
+        private readonly IMachinesProcessor _machinesProcessor;
+        private readonly IAnimalHouseProcessor _animalHouseProcessor;
         private readonly ItemCollectorConfiguration _config;
+        private readonly ILog _logger;
+        private readonly IItemFinder _itemFinder;
 
         public ItemCollectorMod()
         {
-            Log.Info("Initalizing ItemCollector Mod");
-            _config = ConfigurationBase.LoadConfiguration<ItemCollectorConfiguration>();
-            ItemFinder.ConnectorItems = new List<string>(_config.ItemsToConsiderConnectors.Split(',').Select(v => v.Trim()));
-            ItemFinder.ConnectorFloorings = _config.FlooringsToConsiderConnectors;
+            Log.Info($"Initalizing {nameof(ItemCollectorMod)}");
+            try
+            {
+                var container = new WindsorContainer();
+                container.Install(new WindsorInstallers());
+                container.Install(new ItemCollecterInstallers());
 
-            var machinesToCollectFrom = _config.MachinesToCollectFrom.Split(',').Select(v => v.Trim()).ToList();
-            var locationsToSearch = _config.LocationsToSearch.Split(',').Select(v => v.Trim()).ToList();
-            _machinesProcessor = new MachinesProcessor(machinesToCollectFrom, locationsToSearch, _config.AddBuildingsToLocations);
-            _animalHouseProcessor = new AnimalHouseProcessor(_config.PetAnimals, _config.AdditionalFriendshipFromCollecting, _config.MuteAnimalsWhenCollecting);
+                _config = container.Resolve<IConfigurator>().LoadConfiguration<ItemCollectorConfiguration>();
+                container.Register(Component.For(
+                    typeof (IMachinesProcessorConfiguration),
+                    typeof (IAnimalHouseProcessorConfiguration),
+                    typeof (ItemCollectorConfiguration),
+                    typeof (IMachinesProcessorConfiguration),
+                    typeof (IItemFinderConfiguration)
+                    ).Instance(_config));
+
+                _logger = container.Resolve<ILog>();
+                _machinesProcessor = container.Resolve<IMachinesProcessor>();
+                _animalHouseProcessor = container.Resolve<IAnimalHouseProcessor>();
+                _itemFinder = container.Resolve<IItemFinder>();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Could not initialize the {nameof(ItemCollectorMod)}: {ex}");
+            }
         }
 
         public override void Entry(params object[] objects)
@@ -39,7 +58,7 @@ namespace FarmAutomation.ItemCollector
             {
                 if (_config.EnableMod)
                 {
-                    Log.Verbose("It's a new day. Resetting the Item Collector mod");
+                    _logger.Debug("It's a new day. Resetting the Item Collector mod");
                     _animalHouseProcessor.DailyReset();
                     _machinesProcessor.DailyReset();
                 }
@@ -56,13 +75,13 @@ namespace FarmAutomation.ItemCollector
                     }
                     catch (Exception ex)
                     {
-                        Log.Error("an error occured with the automation mod: {0}", ex);
+                        _logger.Error($"an error occured with the automation mod: {ex}");
                     }
                 }
             };
             PlayerEvents.InventoryChanged += (s, c) =>
             {
-                if (_gameLoaded && ItemFinder.HaveConnectorsInInventoryChanged(c))
+                if (_gameLoaded && _itemFinder.HaveConnectorsInInventoryChanged(c))
                 {
                     try
                     {
@@ -71,7 +90,7 @@ namespace FarmAutomation.ItemCollector
                     }
                     catch (Exception ex)
                     {
-                        Log.Error("an error occured with the automation mod: {0}", ex);
+                        _logger.Error($"an error occured with the automation mod: {ex}");
                     }
                 }
             };

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FarmAutomation.Common;
+using FarmAutomation.Common.Interfaces;
+using FarmAutomation.ItemCollector.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Objects;
@@ -12,8 +12,13 @@ using Object = StardewValley.Object;
 
 namespace FarmAutomation.ItemCollector.Processors
 {
-    internal class AnimalHouseProcessor
+    internal class AnimalHouseProcessor : IAnimalHouseProcessor
     {
+        private readonly ILog _logger;
+        private readonly IItemFinder _itemFinder;
+        private readonly IAnimalHouseProcessorConfiguration _configuration;
+        private readonly ISoundHelper _soundHelper;
+
         private readonly List<string> _barnTools = new List<string>
         {
             "Milk Pail",
@@ -33,17 +38,14 @@ namespace FarmAutomation.ItemCollector.Processors
         };
 
         private bool _dailiesDone;
-
-        public AnimalHouseProcessor(bool petAnimals, int additionalFriendshipFromCollecting, bool muteWhenCollecting)
+        
+        public AnimalHouseProcessor(ILog logger, IItemFinder itemFinder, IAnimalHouseProcessorConfiguration configuration, ISoundHelper soundHelper)
         {
-            PetAnimals = petAnimals;
-            AdditionalFriendshipFromCollecting = additionalFriendshipFromCollecting;
-            MuteWhenCollecting = muteWhenCollecting;
+            _logger = logger;
+            _itemFinder = itemFinder;
+            _configuration = configuration;
+            _soundHelper = soundHelper;
         }
-
-        public bool PetAnimals { get; set; }
-        public int AdditionalFriendshipFromCollecting { get; set; }
-        public bool MuteWhenCollecting { get; set; }
 
         public void ProcessAnimalBuildings()
         {
@@ -52,23 +54,23 @@ namespace FarmAutomation.ItemCollector.Processors
             {
                 return;
             }
-            if (MuteWhenCollecting)
+            if (_configuration.MuteAnimalsWhenCollecting)
             {
-                SoundHelper.MuteTemporary(2000);
+                _soundHelper.MuteTemporary(2000);
             }
-            Log.Info("Petting animals and processing their buildings to collect items");
-            if (PetAnimals)
+            _logger.Info("Petting animals and processing their buildings to collect items");
+            if (_configuration.PetAnimals)
             {
                 var allAnimals = farm.animals.Values.Concat(farm.buildings.Where(b => b.indoors is AnimalHouse).SelectMany(i => ((AnimalHouse)i.indoors).animals.Values));
                 foreach (var animal in allAnimals)
                 {
                     PetAnimal(animal);
                 }
-                Log.Info("All animals have been petted.");
+                _logger.Info("All animals have been petted.");
             }
             foreach (var building in farm.buildings)
             {
-                var chest = ItemFinder.FindChestInLocation(building.indoors);
+                var chest = _itemFinder.FindChestInLocation(building.indoors);
                 if (chest == null)
                 {
                     continue;
@@ -81,30 +83,30 @@ namespace FarmAutomation.ItemCollector.Processors
                 if (building is Barn)
                 {
                     int outsideAnimalCount = 0;
-                    foreach (var outsideAnimal in farm.animals.Values.Where(a=> a.home is Barn && a.home == building))
+                    foreach (var outsideAnimal in farm.animals.Values.Where(a => a.home is Barn && a.home == building))
                     {
                         CollectBarnAnimalProduce(outsideAnimal, chest);
                         ++outsideAnimalCount;
                     }
                     if (outsideAnimalCount > 0)
                     {
-                        Log.Verbose("Found {0} animals wandering outside. collected their milk or wool and put it in the chest in their {1}", outsideAnimalCount, building.buildingType);
+                        _logger.Debug($"Found {outsideAnimalCount} animals wandering outside. collected their milk or wool and put it in the chest in their {building.buildingType}");
                     }
                     int insideAnimalCount = 0;
-                    foreach (var animal in ((AnimalHouse) building.indoors).animals.Values)
+                    foreach (var animal in ((AnimalHouse)building.indoors).animals.Values)
                     {
                         CollectBarnAnimalProduce(animal, chest);
                         ++insideAnimalCount;
                     }
                     if (insideAnimalCount > 0)
                     {
-                        Log.Verbose("Found {0} animals in the {1}. Collected their milk or wool and put it in the chest in their home.", insideAnimalCount, building.buildingType);
+                        _logger.Debug($"Found {insideAnimalCount} animals in the {building.buildingType}. Collected their milk or wool and put it in the chest in their home.");
                     }
                 }
                 if (building.indoors is SlimeHutch)
                 {
                     // collect goop
-                    Log.Info("You have a slime hutch, but unfortunately we cannot collect the slime there yet. This feature will be added in the future.");
+                    _logger.Info("You have a slime hutch, but unfortunately we cannot collect the slime there yet. This feature will be added in the future.");
                 }
             }
             _dailiesDone = true;
@@ -121,7 +123,7 @@ namespace FarmAutomation.ItemCollector.Processors
                 {
                     building.indoors.Objects.Remove(c.Key);
                 }
-                Log.Verbose("Collected a {0} and put it into the chest in your {1}", c.Value.Name, building.buildingType);
+                _logger.Debug($"Collected a {c.Value.Name} and put it into the chest in your {building.buildingType}");
             });
         }
 
@@ -145,7 +147,7 @@ namespace FarmAutomation.ItemCollector.Processors
                 {
                     if (chest.items.Count >= 36)
                     {
-                        Log.Error("A {0} is ready for harvesting it's produce. Unfortunately the chest in it's home is already full.", animal.type);
+                        _logger.Error($"A {animal.type} is ready for harvesting it's produce. Unfortunately the chest in it's home is already full.");
                         // show message that the chest is full
                         return;
                     }
@@ -156,7 +158,7 @@ namespace FarmAutomation.ItemCollector.Processors
                     chest.addItem(
                         new Object(Vector2.Zero, animal.currentProduce, null, false, true, false, false));
                     animal.friendshipTowardFarmer = Math.Min(1000,
-                        animal.friendshipTowardFarmer + AdditionalFriendshipFromCollecting);
+                        animal.friendshipTowardFarmer + _configuration.AdditionalFriendshipFromCollecting);
                     animal.currentProduce = -1;
                 }
             }

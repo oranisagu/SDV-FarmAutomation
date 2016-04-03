@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Threading;
+using FarmAutomation.Common.Interfaces;
 using StardewValley;
 
 namespace FarmAutomation.Common
 {
-    public class SoundHelper
+    public class SoundHelper : ISoundHelper
     {
-        public static void MuteTemporary(int milliseconds)
+        public void MuteTemporary(int milliseconds)
         {
             var worker = new BackgroundWorker();
             var originalVolume = Game1.options.soundVolumeLevel;

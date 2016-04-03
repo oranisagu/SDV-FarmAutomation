@@ -1,4 +1,4 @@
-﻿using FarmAutomation.Common;
+﻿using FarmAutomation.Common.Configuration;
 
 namespace FarmAutomation.BarnDoorAutomation
 {

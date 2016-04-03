@@ -1,4 +1,8 @@
-﻿using FarmAutomation.Common;
+﻿using System;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
+using FarmAutomation.Common;
+using FarmAutomation.Common.Interfaces;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -15,6 +19,7 @@ namespace FarmAutomation.BarnDoorAutomation
         private bool _gameLoaded;
 
         private readonly BarnDoorAutomationConfiguration _config;
+        private readonly ILog _logger;
 
         /// <summary>
         /// if true, opening doors will be skipped until the next day. this is used to keep cpu time as low as possible
@@ -31,8 +36,21 @@ namespace FarmAutomation.BarnDoorAutomation
         /// </summary>
         public BarnDoorAutomationMod()
         {
-            Log.Info("Initalizing BarnDoorAutomation Mod");
-            _config = ConfigurationBase.LoadConfiguration<BarnDoorAutomationConfiguration>();
+            Log.Info($"Initalizing {nameof(BarnDoorAutomationMod)}");
+            try
+            {
+                var container = new WindsorContainer();
+                container.Install(new WindsorInstallers());
+                _config = container.Resolve<IConfigurator>().LoadConfiguration<BarnDoorAutomationConfiguration>();
+
+                container.Register(Component.For<BarnDoorAutomationConfiguration>().Instance(_config));
+
+                _logger = container.Resolve<ILog>();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Could not initialize the {nameof(BarnDoorAutomationMod)}: {ex}");
+            }
         }
 
         /// <summary>
@@ -68,7 +86,7 @@ namespace FarmAutomation.BarnDoorAutomation
             // ignore days when the doors should stay closed
             if (!IgnoreOpeningToday && WillAnimalsStayInside())
             {
-                Log.Verbose("It's either winter or unpleasant weather today, the animals will stay inside. Animal doors won't be opened.");
+                _logger.Debug("It's either winter or unpleasant weather today, the animals will stay inside. Animal doors won't be opened.");
                 IgnoreOpeningToday = true;
             }
 
@@ -82,7 +100,7 @@ namespace FarmAutomation.BarnDoorAutomation
                 if (SkipSpringDay())
                 {
                     IgnoreOpeningToday = true;
-                    Log.Verbose("Skipping door opening for first {0} days in spring", _config.FirstDayInSpringToOpen);
+                    _logger.Debug($"Skipping door opening for first {_config.FirstDayInSpringToOpen} days in spring");
                     return;
                 }
                 SetAllDoors(DoorState.Open);
@@ -122,7 +140,7 @@ namespace FarmAutomation.BarnDoorAutomation
                 // skip buildings still in construction
                 if (building.daysOfConstructionLeft > 0)
                 {
-                    Log.Verbose("Skipping {0} because it's in construction", building.buildingType);
+                    _logger.Debug($"Skipping {building.buildingType} because it's in construction");
                     return;
                 }
 
@@ -147,7 +165,7 @@ namespace FarmAutomation.BarnDoorAutomation
                     building.animalDoor.X + building.tileX,
                     building.animalDoor.Y + building.tileY
                 );
-                Log.Verbose("Setting door to {0} for building {1}", desiredDoorState, building.buildingType);
+                _logger.Debug($"Setting door to {desiredDoorState} for building {building.buildingType}");
                 building.doAction(vector, Game1.player);
             }
         }

@@ -1,11 +1,12 @@
 ﻿using System.Linq;
+using FarmAutomation.ItemCollector.Interfaces;
 using StardewValley;
 using StardewValley.Objects;
 using Object = StardewValley.Object;
 
 namespace FarmAutomation.ItemCollector.Processors
 {
-    public class MaterialHelper
+    public class MaterialHelper : IMaterialHelper
     {
         private readonly int[] _ores = {
             Object.copper,
