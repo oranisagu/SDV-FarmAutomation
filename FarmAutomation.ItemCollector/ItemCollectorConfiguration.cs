@@ -6,8 +6,9 @@ using FarmAutomation.ItemCollector.Interfaces;
 
 namespace FarmAutomation.ItemCollector
 {
-    public class ItemCollectorConfiguration : ConfigurationBase, IItemFinderConfiguration, IAnimalHouseProcessorConfiguration, IMachinesProcessorConfiguration
+    public class ItemCollectorConfiguration : IConfigurationBase, IItemFinderConfiguration, IAnimalHouseProcessorConfiguration, IMachinesProcessorConfiguration
     {
+        public bool EnableMod { get; set; }
 
         public bool PetAnimals { get; set; }
         public int AdditionalFriendshipFromCollecting { get; set; }
@@ -29,7 +30,7 @@ namespace FarmAutomation.ItemCollector
             return new List<string>(ItemsToConsiderConnectors.Split(',').Select(v => v.Trim()));
         }
 
-        public override void InitializeDefaults()
+        public void InitializeDefaults()
         {
             PetAnimals = true;
             AdditionalFriendshipFromCollecting = 5;

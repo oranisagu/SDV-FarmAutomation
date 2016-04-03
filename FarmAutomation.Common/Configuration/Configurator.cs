@@ -17,7 +17,7 @@ namespace FarmAutomation.Common.Configuration
             _logger = logger;
         }
 
-        public T LoadConfiguration<T>() where T : ConfigurationBase
+        public T LoadConfiguration<T>() where T : IConfigurationBase
         {
             _logger.Info($"Loading configuration for {typeof (T).Name}");
             _configPath = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) + Path.DirectorySeparatorChar +

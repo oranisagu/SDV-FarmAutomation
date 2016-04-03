@@ -4,6 +4,6 @@ namespace FarmAutomation.Common.Interfaces
 {
     public interface IConfigurator
     {
-        T LoadConfiguration<T>() where T : ConfigurationBase;
+        T LoadConfiguration<T>() where T : IConfigurationBase;
     }
 }
