@@ -43,6 +43,12 @@ Feedback is very appreciated as there are so many situations I can't account for
 There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931), where you can leave suggestions or bug reports.
 
 ## Version History
+#### [0.1.7](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.7)
+only the item collector mod is affected.
+* Bugfix: chests corrupted by 0.1.5 are fixed automatically without having to pickup/replace them manually.
+* If a machine is ready for harvest but the connected chest is full, the mod won't try to take the item anymore. added log message for this case (like for animals)
+* As a last resort, if the mod does take an item from a machine but can't put it into the chest, it will try to put it in the players inventory, to avoid losing items
+
 #### [0.1.6](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.6)
 * Updated logging to the SMAPI 0.39.6 variant.
 * added Mushroom Box & Lightning Rod

@@ -1,3 +1,4 @@
+using System.Linq;
 using FarmAutomation.Common;
 using StardewModdingAPI;
 using StardewValley;
@@ -8,6 +9,7 @@ namespace FarmAutomation.ItemCollector.Processors
     public static class MachineHelper
     {
         private static readonly GhostFarmer Who;
+        private const int MaxChestItems = 36;
 
         static MachineHelper()
         {
@@ -16,8 +18,17 @@ namespace FarmAutomation.ItemCollector.Processors
 
         public static void ProcessMachine(Object machine, Chest connectedChest, MaterialHelper materialHelper)
         {
+            if (connectedChest.items.Any(i => i == null))
+            {
+                connectedChest.items.RemoveAll(i => i == null);
+            }
             if (MachineIsReadyForHarvest(machine))
             {
+                if (connectedChest.items.Count >= MaxChestItems)
+                {
+                    Log.Error($"Your Chest in is already full, can't process the {machine.Name} as the item would get lost.");
+                    return;
+                }
                 HandleFinishedObjectInMachine(machine, connectedChest);
             }
             if (MachineIsReadyForProcessing(machine))
@@ -78,7 +89,11 @@ namespace FarmAutomation.ItemCollector.Processors
             {
                 if (i != null)
                 {
-                    connectedChest.addItem(i);
+                    var result = connectedChest.addItem(i);
+                    if (result != null)
+                    {
+                        Game1.player.addItemToInventory(result);
+                    }
                 }
             });
 
