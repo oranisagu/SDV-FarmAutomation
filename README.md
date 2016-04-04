@@ -7,7 +7,13 @@ These Mods are still in early development and might have bugs or unintended beha
 If you have problems, please give feedback over at the [Forums](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931)
 
 ### Requirements
-You'll need SMAPI v0.39.0 or higher for these mods to work, see their [GitHub Page](https://github.com/ClxS/SMAPI) for more information
+You'll need SMAPI v0.39.6 or higher for these mods to work, see their [GitHub Page](https://github.com/ClxS/SMAPI) for more information
+Always update both mods to their current version, even if nothing changed for one of the mods. The reason being they use a DLL with common functions and .NET only ever loads one.
+This unfortunately means, if you update one mod but not the other, things may lead to problems like this:
+```
+[ERROR] an error occured with the automation mod: System.TypeLoadException: Could not load type 'FarmAutomation.Common.SoundHelper' from assembly 'FarmAutomation.Common, Version=0.1.4.0, Culture=neutral, PublicKeyToken=null'.
+```
+I'm looking into finding a definitive solution for this issue, but for now, if you use both mods, always use the most current version of both, otherwise it might lead to issues.
 
 ### Download
 You can download the compiled mods under [latest releases](https://github.com/oranisagu/SDV-FarmAutomation/releases/latest).
