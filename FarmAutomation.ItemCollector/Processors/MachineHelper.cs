@@ -1,3 +1,4 @@
+using System.Linq;
 using FarmAutomation.Common;
 using StardewModdingAPI;
 using StardewValley;
@@ -18,8 +19,17 @@ namespace FarmAutomation.ItemCollector.Processors
 
         public static void ProcessMachine(Object machine, Chest connectedChest, MaterialHelper materialHelper)
         {
+            if (connectedChest.items.Any(i => i == null))
+            {
+                connectedChest.items.RemoveAll(i => i == null);
+            }
             if (MachineIsReadyForHarvest(machine))
             {
+                if (connectedChest.items.Count >= ChestMaxItems)
+                {
+                    Log.Error($"Your Chest in is already full, can't process the {machine.Name} as the item would get lost.");
+                    return;
+                }
                 HandleFinishedObjectInMachine(machine, connectedChest);
             }
             if (MachineIsReadyForProcessing(machine))
@@ -85,10 +95,9 @@ namespace FarmAutomation.ItemCollector.Processors
             {
                 if (i != null)
                 {
-                    Item result;
-                    if ((result = connectedChest.addItem(i)) != null)
+                    var result = connectedChest.addItem(i);
+                    if (result != null)
                     {
-                        //last resort to not lose items. should never happen.
                         Game1.player.addItemToInventory(result);
                     }
                 }
