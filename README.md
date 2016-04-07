@@ -43,6 +43,13 @@ Feedback is very appreciated as there are so many situations I can't account for
 There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931), where you can leave suggestions or bug reports.
 
 ## Version History
+#### [0.1.7](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.7)
+* Spelling of Rabbit's Foot should now be correct and pick it up automatically
+* Charcoal Kilns used 10 (as of 1.0.7) but required the chest to have at least 20 logs. 
+* Update to the ghost farmer to hopefully be a bit more stable and added a reset to it if something goes wrong.
+* If a chest is full, the mod won't try to add any items from machines. 
+* If an item still can't be placed into a chest, it will be added to the players inventory instead as a last resort.
+
 #### [0.1.6](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.6)
 * Updated logging to the SMAPI 0.39.6 variant.
 * added Mushroom Box & Lightning Rod

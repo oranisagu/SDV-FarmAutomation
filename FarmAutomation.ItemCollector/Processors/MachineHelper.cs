@@ -7,11 +7,13 @@ namespace FarmAutomation.ItemCollector.Processors
 {
     public static class MachineHelper
     {
-        private static readonly GhostFarmer Who;
+        public const int ChestMaxItems = 36;
+        private static GhostFarmer _who;
+        private static GhostFarmer Who => _who ?? (_who = GhostFarmer.CreateFarmer());
 
-        static MachineHelper()
+        public static void DailyReset()
         {
-            Who = GhostFarmer.CreateFarmer();
+            _who = null;
         }
 
         public static void ProcessMachine(Object machine, Chest connectedChest, MaterialHelper materialHelper)
@@ -73,12 +75,22 @@ namespace FarmAutomation.ItemCollector.Processors
         public static void HandleFinishedObjectInMachine(Object machine, Chest connectedChest)
         {
             var logMessage = $"Collecting a {machine.heldObject?.Name} from your {machine.Name}.";
+            if (connectedChest.items.Count > ChestMaxItems)
+            {
+                Log.Error($"Your chest is already full. Cannot place item from {machine.Name} into it.");
+                return;
+            }
             machine.checkForAction(Who);
             Who.items.ForEach(i =>
             {
                 if (i != null)
                 {
-                    connectedChest.addItem(i);
+                    Item result;
+                    if ((result = connectedChest.addItem(i)) != null)
+                    {
+                        //last resort to not lose items. should never happen.
+                        Game1.player.addItemToInventory(result);
+                    }
                 }
             });
 

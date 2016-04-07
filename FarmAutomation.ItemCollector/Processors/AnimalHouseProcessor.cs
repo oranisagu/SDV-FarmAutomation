@@ -27,7 +27,7 @@ namespace FarmAutomation.ItemCollector.Processors
             "Duck Egg",
             "Wool",
             "Duck Feather",
-            "Rabbits Foot",
+            "Rabbit's Foot",
             "Void Egg",
             "Dinosaur Egg"
         };

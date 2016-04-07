@@ -42,6 +42,7 @@ namespace FarmAutomation.ItemCollector
                     Log.Debug("It's a new day. Resetting the Item Collector mod");
                     _animalHouseProcessor.DailyReset();
                     _machinesProcessor.DailyReset();
+
                 }
             };
             TimeEvents.TimeOfDayChanged += (s, e) =>
@@ -57,6 +58,7 @@ namespace FarmAutomation.ItemCollector
                     catch (Exception ex)
                     {
                         Log.Error($"an error occured with the automation mod: {ex}");
+                        _machinesProcessor.DailyReset();
                     }
                 }
             };
@@ -72,6 +74,7 @@ namespace FarmAutomation.ItemCollector
                     catch (Exception ex)
                     {
                         Log.Error($"an error occured with the automation mod: {ex}");
+                        _machinesProcessor.DailyReset();
                     }
                 }
             };

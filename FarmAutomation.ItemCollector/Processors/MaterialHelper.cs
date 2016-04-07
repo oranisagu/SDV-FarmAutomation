@@ -83,7 +83,7 @@ namespace FarmAutomation.ItemCollector.Processors
             }
             if (machineName == "Charcoal Kiln" && material.parentSheetIndex == Object.wood)
             {
-                return 20;
+                return 10;
             }
             return 1;
         }
