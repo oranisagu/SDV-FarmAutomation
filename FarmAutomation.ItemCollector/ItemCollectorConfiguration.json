@@ -1,25 +1,28 @@
 {
-  /* if set to true, animals will be petted each day */
+  /* Default: true. If true, animals will be petted each day. If false animals will not be petted each day. */
   "PetAnimals": true,
-  /* defaults to 5. the amount of friendship each animal gains when you collect milk/wool from it. */
+
+  /* Default: 5. The amount of friendship each animal gains when you collect milk/wool from it. If no chest is in the barn/coop where the animal lives, no items will be collected. */
   "AdditionalFriendshipFromCollecting": 5,
 
-  /* check this if you want the sound to be muted when all animals get processed. if you turn this off, there will be quite a cacaphony of bleats, moos and clucks. */
-  "MuteAnimalsWhenCollecting" : true,
+  /* Default: true. If true sound will be muted for a short time while all animals get processed. If false, there will be quite a cacaphony of bleats, moos and clucks. */
+  "MuteAnimalsWhenCollecting": true,
 
-  /* the machines from which their finished product should automatically be collected. if it's a machine you can put items in, it will also look for items to put in afterwards */
+  /* The machines from which their finished product should automatically be collected. If it's a machine you can put items in, it will also look for items to put in afterwards */
   "MachinesToCollectFrom": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune, Furnace, Seed Maker, Statue of Perfection, Crab Pot, Charcoal Kiln, Mushroom Box, Lightning Rod",
-  /* these items are considered a connection. if a machine is not connected to a chest (either by being adjecant or by an adjecant machine being connected) nothing will happen.
-  for example, you can add Fence and Gate if you want those to be considered for connections as well.
+
+  /* These machines or items are considered a connection. If a machine is not connected to a chest (either by being directly adjecant or by being adjecant to another machine which is machine connected) nothing will happen.
+  For example, you could add Fence and Gate if you want those to be considered for connections as well.
   */
   "ItemsToConsiderConnectors": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune, Furnace, Seed Maker, Statue of Perfection, Crab Pot, Charcoal Kiln, Mushroom Box, Lightning Rod, Chest",
 
-  /* the following floor tiles are considered connector. be careful, if you have lots of these floors, your whole farm might connect to the same chest and the mod might
+  /* The following floor tiles are considered connector. be careful, if you have lots of these floors, your whole farm might connect to the same chest and the mod might
      accidentally add items to your machines you'd rather keep.
 
-     by default only boardwalks are enabled (few people seem to use them). use these to connect your machines to chests or add another type of flooring of your liking by 
-     adding numbers from below comma separated into the list. For example:
-            "FlooringsToConsiderConnector": { 6, 7, 8 },
+     by default only Wood Paths are enabled (few people seem to use them). Use these to connect your machines to chests or add another type of flooring of your liking by 
+     adding numbers from below comma separated into the list. For example using something like this:
+            "FlooringsToConsiderConnector": [ 6, 7, 8 ],
+     would mean Wood Path, Crystal Path and Cobblestone Path will be connected as well.
 
      Floor types:
       Wood Floor = 0;
@@ -35,12 +38,61 @@
     */
   "FlooringsToConsiderConnectors": [ 6 ],
 
-  /* the names of the game locations where machines are searched for.  */
+  /* The names of the game locations where machines are searched for.
+  The full list of possible locations is as follows:
+    FarmHouse
+    Farm
+    FarmCave
+    Town
+    JoshHouse
+    HaleyHouse
+    SamHouse
+    Blacksmith
+    ManorHouse
+    SeedShop
+    Saloon
+    Trailer
+    Hospital
+    HarveyRoom
+    Beach
+    ElliottHouse
+    Mountain
+    ScienceHouse
+    SebastianRoom
+    Tent
+    Forest
+    WizardHouse
+    AnimalShop
+    LeahHouse
+    BusStop
+    Mine
+    Sewer
+    Desert
+    Club
+    SandyHouse
+    ArchaeologyHouse
+    WizardHouseBasement
+    AdventureGuild
+    Woods
+    Railroad
+    Summit
+    FishShop
+    BathHouse_Entry
+    BathHouse_MensLocker
+    BathHouse_WomensLocker
+    BathHouse_Pool
+    CommunityCenter
+    JojaMart
+    Greenhouse
+    SkullCave
+    Backwoods
+    Tunnel
+  */
   "LocationsToSearch": "Farm, Greenhouse, FarmHouse, FarmCave",
 
-  /* should farm buildings be searched for machines as well? */
+  /* Default: true. If true, all buildings (Barns, Coops etc) will be checked for machines as well. If false, the inside of those buildings will be ignored. */
   "AddBuildingsToLocations": true,
 
-  /* enable or disable the mod */
+  /* Default: true. If true, the mod is enabled. If false, the mod will not do anything. */
   "EnableMod": true
 }
