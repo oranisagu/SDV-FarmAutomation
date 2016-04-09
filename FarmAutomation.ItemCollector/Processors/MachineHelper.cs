@@ -1,3 +1,4 @@
+using System.Linq;
 using FarmAutomation.Common;
 using FarmAutomation.Common.Interfaces;
 using FarmAutomation.ItemCollector.Interfaces;
@@ -33,55 +34,39 @@ namespace FarmAutomation.ItemCollector.Processors
             }
             if (MachineIsReadyForProcessing(machine))
             {
-                var refillable = _materialHelper.FindMaterialForMachine(machine.Name, connectedChest);
-                Object coal = null;
-                if (machine.Name == "Furnace")
-                {
-                    coal = _materialHelper.FindMaterialForMachine("Coal", connectedChest);
-                    if (coal == null)
-                    {
-                        //no coal to power the furnace
-                        return;
-                    }
-                }
+                var refillable = _materialHelper.FindMaterialForMachine(machine.Name, connectedChest)?.ToList();
                 if (refillable != null)
                 {
-                    // furnace needs an additional coal
-                    if (machine.Name == "Furnace")
-                    {
-                        var coalAmount = _materialHelper.GetMaterialAmountForMachine(machine.Name, coal);
-                        MoveItemToFarmer(coal, connectedChest, Who, coalAmount);
-                    }
-
-                    var materialAmount = _materialHelper.GetMaterialAmountForMachine(machine.Name, refillable);
-                    if (materialAmount > refillable.Stack)
-                    {
-                        return;
-                    }
-                    var tempRefillable = MoveItemToFarmer(refillable, connectedChest, Who, materialAmount);
-
-                    if (!PutItemInMachine(machine, tempRefillable, Who))
+                    var dropIn = refillable.First();
+                    var tempItems = refillable.Select(r=>MoveItemsToFarmer(r, connectedChest, Who)).ToList();
+                    
+                    if (!PutItemInMachine(machine, tempItems.First(), Who))
                     {
                         // item was not accepted by the machine, transfer it back to the chest
                         Who.items.ForEach(i => connectedChest.addItem(i));
                     }
                     Who.ClearInventory();
-                    _logger.Info($"Refilled your {machine.Name} with a {refillable.Name} of {(ItemQuality)refillable.quality} quality. The machine now takes {machine.minutesUntilReady} minutes to process. You have {refillable.Stack} {refillable.Name} left");
+                    _logger.Info($"Refilled your {machine.Name} with a {dropIn.Name} of {(ItemQuality)tempItems.First().quality} quality. The machine now takes {machine.minutesUntilReady} minutes to process.");
                 }
             }
         }
 
-        private Object MoveItemToFarmer(Object itemToMove, Chest sourceChest, Farmer target, int amount)
+        private Object MoveItemsToFarmer(Refillable refillable, Chest connectedChest, GhostFarmer who)
         {
+            var itemToMove = connectedChest.items.OfType<Object>().FirstOrDefault(refillable.ObjectSatisfiesRefillable);
+            if (itemToMove == null)
+            {
+                return null;
+            }
             var temporaryItem = (Object)itemToMove.getOne();
-            temporaryItem.Stack = amount;
-            var freeIndex = target.items.IndexOf(null);
-            target.items[freeIndex] = temporaryItem;
-            _itemHelper.RemoveItemFromChest(itemToMove, sourceChest, amount);
+            temporaryItem.Stack = refillable.AmountNeeded;
+            var freeIndex = who.items.IndexOf(null);
+            who.items[freeIndex] = temporaryItem;
+            _itemHelper.RemoveItemFromChest(itemToMove, connectedChest, refillable.AmountNeeded);
             return temporaryItem;
         }
 
-        public void HandleFinishedObjectInMachine(Object machine, Chest connectedChest)
+        private void HandleFinishedObjectInMachine(Object machine, Chest connectedChest)
         {
             var logMessage = $"Collecting a {machine.heldObject?.Name} from your {machine.Name}.";
             machine.checkForAction(Who);
@@ -101,19 +86,19 @@ namespace FarmAutomation.ItemCollector.Processors
             Log.Info(logMessage);
         }
 
-        public bool MachineIsReadyForHarvest(Object machine)
+        private bool MachineIsReadyForHarvest(Object machine)
         {
             return machine.readyForHarvest;
         }
 
 
-        public bool MachineIsReadyForProcessing(Object machine)
+        private bool MachineIsReadyForProcessing(Object machine)
         {
             return !(machine is Chest) && machine.minutesUntilReady == 0 && machine.heldObject == null;
         }
 
 
-        public bool PutItemInMachine(Object machine, Object refillable, Farmer who)
+        private bool PutItemInMachine(Object machine, Object refillable, Farmer who)
         {
             return machine.performObjectDropInAction(refillable, false, who);
         }

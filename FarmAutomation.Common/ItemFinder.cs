@@ -22,7 +22,7 @@ namespace FarmAutomation.Common
             _locationHelper = locationHelper;
         }
 
-        public IEnumerable<Object> FindItemsofType(GameLocation location, Type itemType)
+        private IEnumerable<Object> FindItemsofType(GameLocation location, Type itemType)
         {
             return location?.objects.Values.Where(o => o.GetType() == itemType);
         }

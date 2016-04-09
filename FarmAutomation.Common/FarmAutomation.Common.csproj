@@ -122,6 +122,7 @@
     <Compile Include="Configuration\IConfigurationBase.cs" />
     <Compile Include="Configuration\Configurator.cs" />
     <Compile Include="ConnectedTile.cs" />
+    <Compile Include="FloorTile.cs" />
     <Compile Include="GhostFarmer.cs" />
     <Compile Include="Interfaces\IItemHelper.cs" />
     <Compile Include="Interfaces\IFarmerFactory.cs" />

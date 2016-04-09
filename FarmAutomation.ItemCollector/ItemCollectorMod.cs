@@ -6,6 +6,7 @@ using Castle.Windsor;
 using FarmAutomation.Common;
 using FarmAutomation.Common.Interfaces;
 using FarmAutomation.ItemCollector.Interfaces;
+using Microsoft.Xna.Framework.Input;
 using StardewValley;
 
 namespace FarmAutomation.ItemCollector

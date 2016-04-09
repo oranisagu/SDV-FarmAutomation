@@ -1,11 +1,10 @@
-﻿using StardewValley;
+﻿using System.Collections.Generic;
 using StardewValley.Objects;
 
 namespace FarmAutomation.ItemCollector.Interfaces
 {
     public interface IMaterialHelper
     {
-        Object FindMaterialForMachine(string name, Chest connectedChest);
-        int GetMaterialAmountForMachine(string name, Object coal);
+        IEnumerable<Refillable> FindMaterialForMachine(string machineName, Chest chest);
     }
 }

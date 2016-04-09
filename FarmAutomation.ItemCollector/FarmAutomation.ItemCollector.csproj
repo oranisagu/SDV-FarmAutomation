@@ -118,6 +118,7 @@
     <Compile Include="Interfaces\IMachinesProcessorConfiguration.cs" />
     <Compile Include="Interfaces\IMaterialHelper.cs" />
     <Compile Include="ItemCollecterInstallers.cs" />
+    <Compile Include="ItemConfiguration.cs" />
     <Compile Include="Processors\MaterialHelper.cs" />
     <Compile Include="Processors\AnimalHouseProcessor.cs" />
     <Compile Include="ItemCollectorConfiguration.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Processors\MachineHelper.cs" />
     <Compile Include="Processors\MachinesProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Refillable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ItemCollectorConfiguration.json">

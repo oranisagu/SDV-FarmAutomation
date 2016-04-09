@@ -35,7 +35,7 @@ namespace FarmAutomation.ItemCollector.Processors
             DailyReset();
         }
 
-        public IEnumerable<GameLocation> GetLocations()
+        private IEnumerable<GameLocation> GetLocations()
         {
             var configuredNames = _gameLocationsToSearch.Select(Game1.getLocationFromName);
             if (AddBuildingsToLocations)
