@@ -50,7 +50,7 @@ namespace FarmAutomation.BarnDoorAutomation
             catch (Exception ex)
             {
                 Log.Error($"Could not initialize the {nameof(BarnDoorAutomationMod)}: {ex}");
-            }
+        }
         }
 
         /// <summary>

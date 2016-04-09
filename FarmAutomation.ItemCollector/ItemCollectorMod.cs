@@ -61,6 +61,7 @@ namespace FarmAutomation.ItemCollector
                     _logger.Debug("It's a new day. Resetting the Item Collector mod");
                     _animalHouseProcessor.DailyReset();
                     _machinesProcessor.DailyReset();
+
                 }
             };
             TimeEvents.TimeOfDayChanged += (s, e) =>

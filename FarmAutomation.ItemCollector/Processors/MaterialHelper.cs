@@ -11,19 +11,19 @@ namespace FarmAutomation.ItemCollector.Processors
         public MaterialHelper(ItemConfiguration items)
         {
             _items = items;
-        }
+            }
 
         public IEnumerable<Refillable> FindMaterialForMachine(string machineName, Chest chest)
-        {
+            {
             if (chest == null)
             {
-                return null;
+                    return null;
             }
 
             if (_items.MachineRefillables.ContainsKey(machineName))
-            {
+        {
                 return _items.MachineRefillables[machineName].Select(mr=> mr.GetMatchingRefillables(chest)).FirstOrDefault();
-            }
+        }
             return null;
         }
     }

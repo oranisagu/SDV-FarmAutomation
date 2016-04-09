@@ -131,6 +131,10 @@ namespace FarmAutomation.ItemCollector.Processors
 
         public void DailyReset()
         {
+            if (Game1.hasLoadedGame)
+            {
+                _machineHelper.DailyReset();
+            }
             _connectedChestsCache = null;
         }
 

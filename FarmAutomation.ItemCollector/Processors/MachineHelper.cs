@@ -10,6 +10,8 @@ namespace FarmAutomation.ItemCollector.Processors
 {
     public class MachineHelper : IMachineHelper
     {
+        public const int ChestMaxItems = 36;
+
         private readonly IMaterialHelper _materialHelper;
         private readonly ILog _logger;
         private readonly IFarmerFactory _factory;
@@ -26,10 +28,24 @@ namespace FarmAutomation.ItemCollector.Processors
             _itemHelper = itemHelper;
         }
 
+        public void DailyReset()
+        {
+            _who = null;
+        }
+
         public void ProcessMachine(Object machine, Chest connectedChest)
         {
+            if (connectedChest.items.Any(i => i == null))
+            {
+                connectedChest.items.RemoveAll(i => i == null);
+            }
             if (MachineIsReadyForHarvest(machine))
             {
+                if (connectedChest.items.Count >= ChestMaxItems)
+                {
+                    Log.Error($"Your Chest in is already full, can't process the {machine.Name} as the item would get lost.");
+                    return;
+                }
                 HandleFinishedObjectInMachine(machine, connectedChest);
             }
             if (MachineIsReadyForProcessing(machine))
@@ -39,7 +55,7 @@ namespace FarmAutomation.ItemCollector.Processors
                 {
                     var dropIn = refillable.First();
                     var tempItems = refillable.Select(r=>MoveItemsToFarmer(r, connectedChest, Who)).ToList();
-                    
+
                     if (!PutItemInMachine(machine, tempItems.First(), Who))
                     {
                         // item was not accepted by the machine, transfer it back to the chest
@@ -69,12 +85,21 @@ namespace FarmAutomation.ItemCollector.Processors
         private void HandleFinishedObjectInMachine(Object machine, Chest connectedChest)
         {
             var logMessage = $"Collecting a {machine.heldObject?.Name} from your {machine.Name}.";
+            if (connectedChest.items.Count > ChestMaxItems)
+            {
+                Log.Error($"Your chest is already full. Cannot place item from {machine.Name} into it.");
+                return;
+            }
             machine.checkForAction(Who);
             Who.items.ForEach(i =>
             {
                 if (i != null)
                 {
-                    connectedChest.addItem(i);
+                    var result = connectedChest.addItem(i);
+                    if (result != null)
+                    {
+                        Game1.player.addItemToInventory(result);
+                    }
                 }
             });
 

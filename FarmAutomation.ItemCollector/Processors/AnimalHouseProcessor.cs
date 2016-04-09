@@ -32,13 +32,13 @@ namespace FarmAutomation.ItemCollector.Processors
             "Duck Egg",
             "Wool",
             "Duck Feather",
-            "Rabbits Foot",
+            "Rabbit's Foot",
             "Void Egg",
             "Dinosaur Egg"
         };
 
         private bool _dailiesDone;
-        
+
         public AnimalHouseProcessor(ILog logger, IItemFinder itemFinder, IAnimalHouseProcessorConfiguration configuration, ISoundHelper soundHelper)
         {
             _logger = logger;

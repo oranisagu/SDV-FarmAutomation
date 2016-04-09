@@ -6,5 +6,7 @@ namespace FarmAutomation.ItemCollector.Interfaces
     internal interface IMachineHelper
     {
         void ProcessMachine(Object o, Chest connectedChest);
+
+        void DailyReset();
     }
 }
