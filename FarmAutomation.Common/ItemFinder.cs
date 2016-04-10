@@ -47,24 +47,29 @@ namespace FarmAutomation.Common
             var adjecantTiles = GetAdjecantTiles(location, startPosition);
             foreach (var adjecantTile in adjecantTiles.Where(t => processedLocations.All(l => l.Location != t)))
             {
-                if (location.objects.ContainsKey(adjecantTile) && _config.GetConnectorItems().Contains(location.objects[adjecantTile].Name))
+                Object item = null;
+                if (location.objects.ContainsKey(adjecantTile))
+                {
+                    item = location.objects[adjecantTile];
+                }
+                
+                if (item != null && (item is Chest || _config.GetConnectorItems().Contains(item.Name)))
                 {
                     var connectedTile = new ConnectedTile
                     {
                         Location = adjecantTile,
                     };
-                    var chest = location.objects[adjecantTile] as Chest;
+                    var chest = item as Chest;
                     if (chest != null)
                     {
                         connectedTile.Chest = chest;
                     }
                     else
                     {
-                        connectedTile.Object = location.objects[adjecantTile];
+                        connectedTile.Object = item;
                     }
                     processedLocations.Add(connectedTile);
                     FindConnectedLocations(location, adjecantTile, processedLocations);
-
                 }
                 else if (location.terrainFeatures.ContainsKey(adjecantTile))
                 {
