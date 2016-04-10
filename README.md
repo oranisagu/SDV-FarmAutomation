@@ -34,11 +34,18 @@ ___
 **Q:** I'm using the ChestPooling mod and weird things happen.
 
 **A:** These mods are unfortunately incompatible for the time being. 
-
 ___
 **Q:** When will the mod be out of Beta? Why is it only at 0.1.X?
 
 **A:** Once no more bugs are being reported, I will release the current version as 1.0. In parallel, I'm working on Version 2, which will have a few new features and better configurability (and which will then stay in beta for a while as well until no more bugs get reported)
+___
+**Q:** I've updated a mod but now it doesn't work at all anymore
+
+**A:** If you use both mods but only update one to the newest version, it's very likely the new one won't work anymore. I'm looking into the issue, but for now, always update both mods if you use both. If you only use one mod, this shouldn't be a problem.
+___
+**Q:** The mod doesn't work.
+
+**A:** Explain your situation with as much detail as possible (just saying it doesn't do anything is really not helpful) either in the issues here on GitHub or on the [Forum Thread](http://community.playstarbound.com/threads/beta-farmautomation-mods-for-smapi-0-39-6.111931). What did you try, what did you expect? Attach Screenshots or your safefile.
 
 ## The Mods
 The following mods are currently part of this project:
