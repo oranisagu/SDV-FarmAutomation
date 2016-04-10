@@ -33,6 +33,7 @@ namespace FarmAutomation.ItemCollector.Processors
         };
 
         private bool _dailiesDone;
+        private const int SlimeParentSheetIndex = 766;
 
         public AnimalHouseProcessor(bool petAnimals, int additionalFriendshipFromCollecting, bool muteWhenCollecting)
         {
@@ -104,7 +105,28 @@ namespace FarmAutomation.ItemCollector.Processors
                 if (building.indoors is SlimeHutch)
                 {
                     // collect goop
-                    Log.Info("You have a slime hutch, but unfortunately we cannot collect the slime there yet. This feature will be added in the future.");
+                    foreach (var pair in building.indoors.objects.Where(o=>o.Value.Name == "Slime Ball").ToList())
+                    {
+                        var item = pair.Value;
+                        Random random = new Random((int)(Game1.stats.daysPlayed + (uint)((int)Game1.uniqueIDForThisGame) + (uint)((int)item.tileLocation.X * 77) + (uint)((int)item.tileLocation.Y * 777) + 2u));
+                        var number = random.Next(10, 21);
+                        var slimeStack = new Object(SlimeParentSheetIndex, number)
+                        {
+                            scale = Vector2.Zero,
+                            quality = 0,
+                            isSpawnedObject = false,
+                            isRecipe = false,
+                            questItem = false,
+                            name = "Slime",
+                            specialVariable = 0,
+                            price = 5
+                        };
+                        if (chest.addItem(slimeStack) == null)
+                        {
+                            building.indoors.objects.Remove(pair.Key);
+                            Log.Info($"Collected {number} Slimes from your Slime Hutch");
+                        }
+                    }
                 }
             }
             _dailiesDone = true;
