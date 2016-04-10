@@ -91,6 +91,7 @@ namespace FarmAutomation.ItemCollector.Processors
             }
             foreach (var gameLocation in GetLocations())
             {
+                MachineHelper.Who.currentLocation = gameLocation;
                 lock (_connectedChestsCache)
                 {
                     if (!_connectedChestsCache.ContainsKey(LocationHelper.GetName(gameLocation)))

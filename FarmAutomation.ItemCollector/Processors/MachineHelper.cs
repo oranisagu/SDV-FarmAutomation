@@ -10,7 +10,7 @@ namespace FarmAutomation.ItemCollector.Processors
     {
         public const int ChestMaxItems = 36;
         private static GhostFarmer _who;
-        private static GhostFarmer Who => _who ?? (_who = GhostFarmer.CreateFarmer());
+        public static GhostFarmer Who => _who ?? (_who = GhostFarmer.CreateFarmer());
 
         public static void DailyReset()
         {
