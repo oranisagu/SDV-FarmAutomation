@@ -68,6 +68,13 @@ Feedback is very appreciated as there are so many situations I can't account for
 There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931), where you can leave suggestions or bug reports.
 
 ## Version History
+#### [0.1.9](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.9)
+* General Bugfix where NullReference Exceptions were logged.
+* The above mentioned bugfix solves the problem where only one Crab Pot at a time would be collected from
+* Added support for the Slime Hutch
+* Flavoured Honey can be collected from Bee Houses (it will no longer turn into Wild Honey)
+* Improved config file comments and included possible Locations
+
 #### [0.1.8](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.8)
 * Spelling of Rabbit's Foot should now be correct and pick it up automatically
 * Charcoal Kilns used 10 (as of 1.0.7) but required the chest to have at least 20 logs. 
