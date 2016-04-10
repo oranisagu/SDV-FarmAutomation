@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using StardewValley;
 
 namespace FarmAutomation.Common
@@ -8,12 +9,11 @@ namespace FarmAutomation.Common
     /// </summary>
     public class GhostFarmer : Farmer
     {
-        public new bool IsMainPlayer => true;
-
-        private GhostFarmer()
+        private GhostFarmer() : base(new FarmerSprite(null), Vector2.Zero, 1, "GhostFarmer", new List<Item>(), true)
         {
             ClearInventory();
-            sprite = Game1.player.sprite;
+            uniqueMultiplayerID = Game1.player.uniqueMultiplayerID;
+            FarmerSprite.setOwner(this);
             maxItems = 24;
         }
 
@@ -21,7 +21,7 @@ namespace FarmAutomation.Common
         {
             items = new List<Item>(new Item[maxItems]);
         }
-
+        
         /// <summary>
         /// need to override the constructor as for some reason the base sets the sprites on the main player which leads to a crash.
         /// </summary>
