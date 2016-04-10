@@ -2,7 +2,9 @@
   /* Default: true. If true, animals will be petted each day. If false animals will not be petted each day. */
   "PetAnimals": true,
 
-  /* Default: 5. The amount of friendship each animal gains when you collect milk/wool from it. If no chest is in the barn/coop where the animal lives, no items will be collected. */
+  /* Default: 5. The amount of friendship each animal gains when you collect milk/wool from it. If no chest is in the barn/coop where the animal lives, no items will be collected. 
+  The vanilla game adds 5 as well.
+  */
   "AdditionalFriendshipFromCollecting": 5,
 
   /* Default: true. If true sound will be muted for a short time while all animals get processed. If false, there will be quite a cacaphony of bleats, moos and clucks. */
