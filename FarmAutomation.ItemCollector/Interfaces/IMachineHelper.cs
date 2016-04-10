@@ -8,5 +8,6 @@ namespace FarmAutomation.ItemCollector.Interfaces
         void ProcessMachine(Object o, Chest connectedChest);
 
         void DailyReset();
+        void SetLocation(GameLocation gameLocation);
     }
 }

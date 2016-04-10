@@ -33,6 +33,11 @@ namespace FarmAutomation.ItemCollector.Processors
             _who = null;
         }
 
+        public void SetLocation(GameLocation gameLocation)
+        {
+            Who.currentLocation = gameLocation;
+        }
+
         public void ProcessMachine(Object machine, Chest connectedChest)
         {
             if (connectedChest.items.Any(i => i == null))
@@ -71,7 +76,7 @@ namespace FarmAutomation.ItemCollector.Processors
         {
             var itemToMove = connectedChest.items.OfType<Object>().FirstOrDefault(refillable.ObjectSatisfiesRefillable);
             if (itemToMove == null)
-            {
+        {
                 return null;
             }
             var temporaryItem = (Object)itemToMove.getOne();

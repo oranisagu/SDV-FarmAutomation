@@ -34,11 +34,18 @@ ___
 **Q:** I'm using the ChestPooling mod and weird things happen.
 
 **A:** These mods are unfortunately incompatible for the time being. 
-
 ___
 **Q:** When will the mod be out of Beta? Why is it only at 0.1.X?
 
 **A:** Once no more bugs are being reported, I will release the current version as 1.0. In parallel, I'm working on Version 2, which will have a few new features and better configurability (and which will then stay in beta for a while as well until no more bugs get reported)
+___
+**Q:** I've updated a mod but now it doesn't work at all anymore
+
+**A:** If you use both mods but only update one to the newest version, it's very likely the new one won't work anymore. I'm looking into the issue, but for now, always update both mods if you use both. If you only use one mod, this shouldn't be a problem.
+___
+**Q:** The mod doesn't work.
+
+**A:** Explain your situation with as much detail as possible (just saying it doesn't do anything is really not helpful) either in the issues here on GitHub or on the [Forum Thread](http://community.playstarbound.com/threads/beta-farmautomation-mods-for-smapi-0-39-6.111931). What did you try, what did you expect? Attach Screenshots or your safefile.
 
 ## The Mods
 The following mods are currently part of this project:
@@ -68,6 +75,13 @@ Feedback is very appreciated as there are so many situations I can't account for
 There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931), where you can leave suggestions or bug reports.
 
 ## Version History
+#### [0.1.9](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.9)
+* General Bugfix where NullReference Exceptions were logged.
+* The above mentioned bugfix solves the problem where only one Crab Pot at a time would be collected from
+* Added support for the Slime Hutch
+* Flavoured Honey can be collected from Bee Houses (it will no longer turn into Wild Honey)
+* Improved config file comments and included possible Locations
+
 #### [0.1.8](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.1.8)
 * Spelling of Rabbit's Foot should now be correct and pick it up automatically
 * Charcoal Kilns used 10 (as of 1.0.7) but required the chest to have at least 20 logs. 

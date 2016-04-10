@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FarmAutomation.Common.Interfaces;
+using Microsoft.Xna.Framework;
 using StardewValley;
 
 namespace FarmAutomation.Common
@@ -24,12 +25,11 @@ namespace FarmAutomation.Common
             }
         }
 
-        public new bool IsMainPlayer => true;
-
-        private GhostFarmer()
+        private GhostFarmer() : base(new FarmerSprite(null), Vector2.Zero, 1, "GhostFarmer", new List<Item>(), true)
         {
             ClearInventory();
-            sprite = Game1.player.sprite;
+            uniqueMultiplayerID = Game1.player.uniqueMultiplayerID;
+            FarmerSprite.setOwner(this);
             maxItems = 24;
         }
 
