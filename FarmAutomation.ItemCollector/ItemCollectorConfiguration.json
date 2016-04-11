@@ -88,7 +88,7 @@
     Backwoods
     Tunnel
   */
-  "LocationsToSearch": "Farm, Greenhouse, FarmHouse, FarmCave",
+  "LocationsToSearch": "Farm, Greenhouse, FarmHouse, FarmCave, Beach",
 
   /* Default: true. If true, all buildings (Barns, Coops etc) will be checked for machines as well. If false, the inside of those buildings will be ignored. */
   "AddBuildingsToLocations": true,
