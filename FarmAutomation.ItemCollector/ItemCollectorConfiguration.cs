@@ -12,6 +12,7 @@ namespace FarmAutomation.ItemCollector
 
         public string MachinesToCollectFrom { get; set; }
         public string ItemsToConsiderConnectors { get; set; }
+        public bool AllowDiagonalConnectionsForAllItems { get; set; }
         public List<int> FlooringsToConsiderConnectors { get; set; }
         public string LocationsToSearch { get; set; }
         public bool AddBuildingsToLocations { get; set; }

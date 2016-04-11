@@ -16,6 +16,9 @@
   */
   "ItemsToConsiderConnectors": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune, Furnace, Seed Maker, Statue of Perfection, Crab Pot, Charcoal Kiln, Mushroom Box, Lightning Rod, Chest",
 
+  /* Default: false. If set to true, when looking for connections not only directly adjecent items will be considered, but diagonally adjecent items as well. */
+  "AllowDiagonalConnectionsForAllItems": false,
+
   /* The following floor tiles are considered connector. be careful, if you have lots of these floors, your whole farm might connect to the same chest and the mod might
      accidentally add items to your machines you'd rather keep.
 

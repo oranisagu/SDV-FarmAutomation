@@ -26,7 +26,7 @@ namespace FarmAutomation.ItemCollector
 
             var machinesToCollectFrom = _config.MachinesToCollectFrom.Split(',').Select(v => v.Trim()).ToList();
             var locationsToSearch = _config.LocationsToSearch.Split(',').Select(v => v.Trim()).ToList();
-            _machinesProcessor = new MachinesProcessor(machinesToCollectFrom, locationsToSearch, _config.AddBuildingsToLocations);
+            _machinesProcessor = new MachinesProcessor(machinesToCollectFrom, locationsToSearch, _config.AddBuildingsToLocations, _config.AllowDiagonalConnectionsForAllItems);
             _animalHouseProcessor = new AnimalHouseProcessor(_config.PetAnimals, _config.AdditionalFriendshipFromCollecting, _config.MuteAnimalsWhenCollecting);
         }
 

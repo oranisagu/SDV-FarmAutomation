@@ -13,16 +13,18 @@ namespace FarmAutomation.ItemCollector.Processors
     {
         private readonly List<string> _machineNamesToProcess;
         private readonly List<string> _gameLocationsToSearch;
+        private readonly bool _allowDiagonalConnectionsForAllItems;
         Dictionary<string, Dictionary<Vector2, Chest>> _connectedChestsCache = new Dictionary<string, Dictionary<Vector2, Chest>>();
         private readonly MaterialHelper _materialHelper;
 
         public bool AddBuildingsToLocations { get; set; }
 
-        public MachinesProcessor(List<string> machineNamesToProcess, List<string> gameLocationsToSearch, bool addBuildingsToLocations)
+        public MachinesProcessor(List<string> machineNamesToProcess, List<string> gameLocationsToSearch, bool addBuildingsToLocations, bool allowDiagonalConnectionsForAllItems)
         {
             AddBuildingsToLocations = addBuildingsToLocations;
             _machineNamesToProcess = machineNamesToProcess;
             _gameLocationsToSearch = gameLocationsToSearch;
+            _allowDiagonalConnectionsForAllItems = allowDiagonalConnectionsForAllItems;
             _gameLocationsToSearch.ForEach(gl => _connectedChestsCache.Add(gl, new Dictionary<Vector2, Chest>()));
             _materialHelper = new MaterialHelper();
             DailyReset();
@@ -58,7 +60,8 @@ namespace FarmAutomation.ItemCollector.Processors
                     {
                         new ConnectedTile {Location = location, Object = valuePair.Value}
                     };
-                    ItemFinder.FindConnectedLocations(gameLocation, location, processedLocations);
+
+                    ItemFinder.FindConnectedLocations(gameLocation, location, processedLocations, _allowDiagonalConnectionsForAllItems);
                     var chest = processedLocations.FirstOrDefault(c => c.Chest != null)?.Chest;
                     foreach (var connectedLocation in processedLocations)
                     {

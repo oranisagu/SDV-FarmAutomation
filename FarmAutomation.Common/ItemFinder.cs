@@ -36,9 +36,9 @@ namespace FarmAutomation.Common
         }
 
         public static void FindConnectedLocations(GameLocation location, Vector2 startPosition,
-            List<ConnectedTile> processedLocations)
+            List<ConnectedTile> processedLocations, bool allowDiagonals)
         {
-            var adjecantTiles = GetAdjecantTiles(location, startPosition);
+            var adjecantTiles = GetAdjecantTiles(location, startPosition, allowDiagonals);
             foreach (var adjecantTile in adjecantTiles.Where(t => processedLocations.All(l => l.Location != t)))
             {
                 if (location.objects.ContainsKey(adjecantTile) && ConnectorItems.Contains(location.objects[adjecantTile].Name))
@@ -57,7 +57,7 @@ namespace FarmAutomation.Common
                         connectedTile.Object = location.objects[adjecantTile];
                     }
                     processedLocations.Add(connectedTile);
-                    FindConnectedLocations(location, adjecantTile, processedLocations);
+                    FindConnectedLocations(location, adjecantTile, processedLocations, allowDiagonals);
 
                 }
                 else if (location.terrainFeatures.ContainsKey(adjecantTile))
@@ -70,20 +70,20 @@ namespace FarmAutomation.Common
                     if (ConnectorFloorings.Contains(feature.whichFloor))
                     {
                         processedLocations.Add(new ConnectedTile { Location = adjecantTile });
-                        FindConnectedLocations(location, adjecantTile, processedLocations);
+                        FindConnectedLocations(location, adjecantTile, processedLocations, allowDiagonals);
                     }
                 }
             }
         }
 
 
-        private static IEnumerable<Vector2> GetAdjecantTiles(GameLocation location, Vector2 startPosition)
+        private static IEnumerable<Vector2> GetAdjecantTiles(GameLocation location, Vector2 startPosition, bool allowDiagonals = false)
         {
             for (int x = -1; x <= 1; ++x)
             {
                 for (int y = -1; y <= 1; ++y)
                 {
-                    if (y == x || y == -x)
+                    if (!allowDiagonals && (y == x || y == -x))
                     {
                         //ignore diagonals
                         continue;
