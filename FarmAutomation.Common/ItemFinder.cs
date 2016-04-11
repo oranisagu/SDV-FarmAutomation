@@ -111,7 +111,7 @@ namespace FarmAutomation.Common
         public bool HaveConnectorsInInventoryChanged(EventArgsInventoryChanged inventoryChange)
         {
             var changes = inventoryChange.Added.Concat(inventoryChange.QuantityChanged).Concat(inventoryChange.Removed);
-            if (changes.Any(i => _config.GetConnectorItems().Contains(i.Item.Name) || i.Item.category == Object.furnitureCategory))
+            if (changes.Any(i => _config.GetConnectorItems().Contains(i.Item.Name) || i.Item is Chest || i.Item.category == Object.furnitureCategory))
             {
                 return true;
             }
