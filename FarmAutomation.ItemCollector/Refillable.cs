@@ -11,6 +11,17 @@ namespace FarmAutomation.ItemCollector
         public int AmountNeeded { get; set; }
         public List<Refillable> DependingItems { get; set; }
 
+        public Refillable()
+        {
+            AmountNeeded = 1;
+            DependingItems = new List<Refillable>();
+        }
+
+        public Refillable(string name) : this()
+        {
+            Name = name;
+        }
+
         private bool InChest(Chest chest)
         {
             return chest.items.Any(i => i.Name == Name && i.Stack >= AmountNeeded && DependingItems.All(di => di.InChest(chest)));

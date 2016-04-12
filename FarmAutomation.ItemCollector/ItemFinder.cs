@@ -1,25 +1,37 @@
-﻿using Microsoft.Xna.Framework;
-using StardewValley;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FarmAutomation.Common;
 using FarmAutomation.Common.Interfaces;
+using FarmAutomation.ItemCollector.Interfaces;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
+using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using Object = StardewValley.Object;
 
-namespace FarmAutomation.Common
+namespace FarmAutomation.ItemCollector
 {
     public class ItemFinder : IItemFinder
     {
         private readonly IItemFinderConfiguration _config;
         private readonly ILocationHelper _locationHelper;
         private readonly bool _allowDiagonalConnectionsForAllItems;
+        private readonly List<int> _flooringIds;
+        private readonly List<int> _flooringParentSheetIndizes;
+        private List<string> _connectorItems;
 
-        public ItemFinder(IItemFinderConfiguration config, ILocationHelper locationHelper)
+        public ItemFinder(IItemFinderConfiguration config, ItemConfiguration itemConfig, ILocationHelper locationHelper)
         {
             _config = config;
+            var floorings = _config.FlooringsToConsiderConnectors.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
+            var matchingFloorTiles = itemConfig.FloorTiles.Where(f => floorings.Contains(f.Name)).ToList();
+
+            _connectorItems = new List<string>(config.ItemsToConsiderConnectors.Split(',').Select(v => v.Trim()));
+            _flooringIds = matchingFloorTiles.Select(f => f.FlooringType).ToList();
+            _flooringParentSheetIndizes = matchingFloorTiles.Select(f => f.InventoryItemId).ToList();
+
             _locationHelper = locationHelper;
             _allowDiagonalConnectionsForAllItems = config.AllowDiagonalConnectionsForAllItems;
         }
@@ -46,7 +58,7 @@ namespace FarmAutomation.Common
         public void FindConnectedLocations(GameLocation location, Vector2 startPosition,
             List<ConnectedTile> processedLocations)
         {
-            var adjecantTiles = GetAdjecantTiles(location, startPosition, _allowDiagonalConnectionsForAllItems);
+            var adjecantTiles = GetAdjecantTiles(location, startPosition);
             foreach (var adjecantTile in adjecantTiles.Where(t => processedLocations.All(l => l.Location != t)))
             {
                 Object item = null;
@@ -55,7 +67,7 @@ namespace FarmAutomation.Common
                     item = location.objects[adjecantTile];
                 }
                 
-                if (item != null && (item is Chest || _config.GetConnectorItems().Contains(item.Name)))
+                if (item != null && (item is Chest || _connectorItems.Contains(item.Name)))
                 {
                     var connectedTile = new ConnectedTile
                     {
@@ -80,7 +92,7 @@ namespace FarmAutomation.Common
                     {
                         continue;
                     }
-                    if (_config.FlooringsToConsiderConnectors.Contains(feature.whichFloor))
+                    if (_flooringIds.Contains(feature.whichFloor))
                     {
                         processedLocations.Add(new ConnectedTile { Location = adjecantTile });
                         FindConnectedLocations(location, adjecantTile, processedLocations);
@@ -90,7 +102,7 @@ namespace FarmAutomation.Common
         }
 
 
-        private IEnumerable<Vector2> GetAdjecantTiles(GameLocation location, Vector2 startPosition, bool allowDiagonals = false)
+        private IEnumerable<Vector2> GetAdjecantTiles(GameLocation location, Vector2 startPosition)
         {
             for (int x = -1; x <= 1; ++x)
             {
@@ -113,7 +125,7 @@ namespace FarmAutomation.Common
         public bool HaveConnectorsInInventoryChanged(EventArgsInventoryChanged inventoryChange)
         {
             var changes = inventoryChange.Added.Concat(inventoryChange.QuantityChanged).Concat(inventoryChange.Removed);
-            if (changes.Any(i => _config.GetConnectorItems().Contains(i.Item.Name) || i.Item is Chest || i.Item.category == Object.furnitureCategory))
+            if (changes.Any(i => _connectorItems.Contains(i.Item.Name) || i.Item is Chest || _flooringParentSheetIndizes.Contains(i.Item.parentSheetIndex)))
             {
                 return true;
             }

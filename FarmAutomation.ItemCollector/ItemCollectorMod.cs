@@ -39,8 +39,8 @@ namespace FarmAutomation.ItemCollector
                     ).Instance(_config));
 
                 var itemConfig = container.Resolve<IConfigurator>().LoadConfiguration<ItemConfiguration>();
-                container.Register(Component.For<IMaterialHelperConfiguration>().Instance(itemConfig));
-
+                container.Register(Component.For(typeof(IMaterialHelperConfiguration), typeof(ItemConfiguration)).Instance(itemConfig));
+                container.Register(Component.For<IItemFinder>().ImplementedBy<ItemFinder>());
                 _logger = container.Resolve<ILog>();
                 _machinesProcessor = container.Resolve<IMachinesProcessor>();
                 _animalHouseProcessor = container.Resolve<IAnimalHouseProcessor>();

@@ -110,7 +110,7 @@ namespace FarmAutomation.ItemCollector.Processors
                     foreach (var pair in building.indoors.objects.Where(o=>o.Value.Name == "Slime Ball").ToList())
                     {
                         var item = pair.Value;
-                        Random random = new Random((int)(Game1.stats.daysPlayed + (uint)((int)Game1.uniqueIDForThisGame) + (uint)((int)item.tileLocation.X * 77) + (uint)((int)item.tileLocation.Y * 777) + 2u));
+                        Random random = new Random((int)(Game1.stats.daysPlayed + (uint)(int)Game1.uniqueIDForThisGame + (uint)((int)item.tileLocation.X * 77) + (uint)((int)item.tileLocation.Y * 777) + 2u));
                         var number = random.Next(10, 21);
                         var slimeStack = new Object(SlimeParentSheetIndex, number)
                         {

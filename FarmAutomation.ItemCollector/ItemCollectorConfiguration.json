@@ -41,7 +41,7 @@
       Cobblestone Path = 8;
       Stepping Stone Path = 9;
     */
-  "FlooringsToConsiderConnectors": [ 6 ],
+  "FlooringsToConsiderConnectors": "Wood Path",
 
   /* The names of the game locations where machines are searched for.
   The full list of possible locations is as follows:

@@ -132,12 +132,9 @@
     <Compile Include="Interfaces\IItemHelper.cs" />
     <Compile Include="Interfaces\IFarmerFactory.cs" />
     <Compile Include="Interfaces\ILocationHelper.cs" />
-    <Compile Include="Interfaces\IItemFinderConfiguration.cs" />
     <Compile Include="Interfaces\IConfigurator.cs" />
-    <Compile Include="Interfaces\IItemFinder.cs" />
     <Compile Include="Interfaces\ILog.cs" />
     <Compile Include="Interfaces\ISoundHelper.cs" />
-    <Compile Include="ItemFinder.cs" />
     <Compile Include="ItemHelper.cs" />
     <Compile Include="ItemQuality.cs" />
     <Compile Include="LocationHelper.cs" />

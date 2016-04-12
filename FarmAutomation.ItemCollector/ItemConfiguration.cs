@@ -30,16 +30,20 @@ namespace FarmAutomation.ItemCollector
             FloorTiles.Add(new FloorTile { Name = "Cobblestone Path", FlooringType = 8, InventoryItemId = 411 });
             FloorTiles.Add(new FloorTile { Name = "Stepping Stone Path", FlooringType = 9, InventoryItemId = 415 });
 
-            var smelterRefillables = new List<Refillable>
+            var furnaceRefillables = new List<Refillable>
             {
-                new Refillable
+                new Refillable ("Iron Ore")
                 {
-                    Name = "Iron Ore",
-                    AmountNeeded = 3,
-                    DependingItems = new List<Refillable>() {new Refillable() {Name = "Coal"}}
+                    AmountNeeded = 5,
+                    DependingItems = new List<Refillable> {new Refillable("Coal")}
+                },
+                new Refillable("Copper Ore")
+                {
+                    AmountNeeded = 5,
+                    DependingItems = new List<Refillable> { new Refillable("Coal") }
                 }
             };
-            MachineRefillables.Add("Smelter", smelterRefillables);
+            MachineRefillables.Add("Furnace", furnaceRefillables);
         }
     }
 }

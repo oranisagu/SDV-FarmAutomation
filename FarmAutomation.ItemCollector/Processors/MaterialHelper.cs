@@ -22,7 +22,7 @@ namespace FarmAutomation.ItemCollector.Processors
 
             if (_items.MachineRefillables.ContainsKey(machineName))
             {
-                return _items.MachineRefillables[machineName].Select(mr => mr.GetMatchingRefillables(chest)).FirstOrDefault();
+                return _items.MachineRefillables[machineName].Select(mr=>mr.GetMatchingRefillables(chest)).FirstOrDefault(r => r!=null);
             }
             return null;
         }
