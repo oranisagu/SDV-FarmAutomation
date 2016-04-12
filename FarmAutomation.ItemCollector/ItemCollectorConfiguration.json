@@ -9,12 +9,12 @@
   "MuteAnimalsWhenCollecting": true,
 
   /* The machines from which their finished product should automatically be collected. If it's a machine you can put items in, it will also look for items to put in afterwards */
-  "MachinesToCollectFrom": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune, Furnace, Seed Maker, Statue of Perfection, Crab Pot, Charcoal Kiln, Mushroom Box, Lightning Rod, Slime Egg-Press",
+  "MachinesToCollectFrom": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune, Furnace, Seed Maker, Statue Of Perfection, Crab Pot, Charcoal Kiln, Mushroom Box, Lightning Rod, Slime Egg-Press",
 
   /* These machines or items are considered a connection. If a machine is not connected to a chest (either by being directly adjecant or by being adjecant to another machine which is machine connected) nothing will happen.
   For example, you could add Fence and Gate if you want those to be considered for connections as well.
   */
-  "ItemsToConsiderConnectors": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune, Furnace, Seed Maker, Statue of Perfection, Crab Pot, Charcoal Kiln, Mushroom Box, Lightning Rod, Slime Egg-Press, Chest",
+  "ItemsToConsiderConnectors": "Keg, Preserves Jar, Cheese Press, Mayonnaise Machine, Loom, Oil Maker, Recycling Machine, Crystalarium, Worm Bin, Bee House, Strange Capsule, Tapper, Statue Of Endless Fortune, Furnace, Seed Maker, Statue Of Perfection, Crab Pot, Charcoal Kiln, Mushroom Box, Lightning Rod, Slime Egg-Press, Chest",
 
   /* Default: false. If set to true, when looking for connections not only directly adjecent items will be considered, but diagonally adjecent items as well. */
   "AllowDiagonalConnectionsForAllItems": false,
