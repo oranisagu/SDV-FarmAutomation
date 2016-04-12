@@ -75,6 +75,12 @@ Feedback is very appreciated as there are so many situations I can't account for
 There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931), where you can leave suggestions or bug reports.
 
 ## Version History
+#### [0.2.1](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.2.1)
+* Bugfix for compatibility with the Chest Label Mod.
+* Added option to mute sound when processing machines. Read the comment in the config file carefully, as there are some downsides.
+* Fixed Statue Of Perfection
+* Added Slime Egg-Press to supported machines
+
 #### [0.2.0](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.2.0)
 * Added compatibility with the Chest Label Mod as chests were ignored if they had a custom label.
 * Various improvements to the comments in the config file
