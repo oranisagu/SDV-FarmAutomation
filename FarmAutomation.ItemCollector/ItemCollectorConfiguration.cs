@@ -16,6 +16,7 @@ namespace FarmAutomation.ItemCollector
         public List<int> FlooringsToConsiderConnectors { get; set; }
         public string LocationsToSearch { get; set; }
         public bool AddBuildingsToLocations { get; set; }
+        public int MuteWhileCollectingFromMachines { get; set; }
 
         public ItemCollectorConfiguration()
         {

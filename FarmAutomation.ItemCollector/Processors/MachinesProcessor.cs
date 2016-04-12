@@ -19,6 +19,8 @@ namespace FarmAutomation.ItemCollector.Processors
 
         public bool AddBuildingsToLocations { get; set; }
 
+        public int MuteWhileCollectingFromMachines { get; set; }
+
         public MachinesProcessor(List<string> machineNamesToProcess, List<string> gameLocationsToSearch, bool addBuildingsToLocations, bool allowDiagonalConnectionsForAllItems)
         {
             AddBuildingsToLocations = addBuildingsToLocations;
@@ -91,6 +93,10 @@ namespace FarmAutomation.ItemCollector.Processors
             {
                 _connectedChestsCache = new Dictionary<string, Dictionary<Vector2, Chest>>();
                 Parallel.ForEach(GetLocations(), BuildCacheForLocation);
+            }
+            if (MuteWhileCollectingFromMachines > 0)
+            {
+                SoundHelper.MuteTemporary(MuteWhileCollectingFromMachines);
             }
             foreach (var gameLocation in GetLocations())
             {

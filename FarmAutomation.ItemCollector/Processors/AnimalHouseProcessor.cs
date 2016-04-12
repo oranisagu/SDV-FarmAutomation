@@ -55,7 +55,7 @@ namespace FarmAutomation.ItemCollector.Processors
             }
             if (MuteWhenCollecting)
             {
-                SoundHelper.MuteTemporary(2000);
+                SoundHelper.MuteTemporary(1500);
             }
             Log.Info("Petting animals and processing their buildings to collect items");
             if (PetAnimals)

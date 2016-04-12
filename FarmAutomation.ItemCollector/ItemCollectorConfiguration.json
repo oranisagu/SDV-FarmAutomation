@@ -96,6 +96,11 @@
   /* Default: true. If true, all buildings (Barns, Coops etc) will be checked for machines as well. If false, the inside of those buildings will be ignored. */
   "AddBuildingsToLocations": true,
 
+  /* Default: 0. Allowed values: 0 - 5000. If set to a number higher than 0, each time machines are processed the sound is muted for this amount of milliseconds. For 2 seconds you would therefore write 2000. Please note that this will mute your sound every 14 seconds (when the in game time updates) and you might not hear other sound clues, as such I only recommend this if you're running a lot of loud machines and only as long as you have materials to power them (especially furnaces are very loud if several get activated at once). As an alternative, consider just setting your sound in the game options a bit lower.
+  
+   As the time needed to process all machines heavily depends on your computer, if you do use this option, I recommend trying 1000 milliseconds and gradually increasing it by 250 milliseconds until you find a suitable duration. */
+  "MuteWhileCollectingFromMachines": 0,
+
   /* Default: true. If true, the mod is enabled. If false, the mod will not do anything. */
   "EnableMod": true
 }
