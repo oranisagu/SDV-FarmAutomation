@@ -47,6 +47,8 @@ namespace FarmAutomation.ItemCollector.Processors
                     return (Object)chest.items.FirstOrDefault(i => i is Object && IsCrabPotMaterial(i));
                 case "Charcoal Kiln":
                     return (Object)chest.items.FirstOrDefault(i => i is Object && i.parentSheetIndex == Object.wood);
+                case "Slime Egg-Press":
+                    return (Object)chest.items.FirstOrDefault(i => i is Object && i.Name == "Slime");
                 default:
                     return null;
             }
