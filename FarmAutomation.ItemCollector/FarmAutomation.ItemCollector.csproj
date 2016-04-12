@@ -117,6 +117,7 @@
     <Compile Include="Interfaces\IMachineHelper.cs" />
     <Compile Include="Interfaces\IMachinesProcessorConfiguration.cs" />
     <Compile Include="Interfaces\IMaterialHelper.cs" />
+    <Compile Include="Interfaces\IMaterialHelperConfiguration.cs" />
     <Compile Include="ItemCollecterInstallers.cs" />
     <Compile Include="ItemConfiguration.cs" />
     <Compile Include="Processors\MaterialHelper.cs" />

@@ -16,29 +16,30 @@ namespace FarmAutomation.ItemCollector.Processors
         private readonly List<string> _gameLocationsToSearch;
         Dictionary<string, Dictionary<Vector2, Chest>> _connectedChestsCache = new Dictionary<string, Dictionary<Vector2, Chest>>();
         private readonly ILocationHelper _locationHelper;
+        private readonly IMachinesProcessorConfiguration _config;
         private readonly IMachineHelper _machineHelper;
         private readonly ILog _logger;
         private readonly IItemFinder _finder;
+        private readonly ISoundHelper _soundHelper;
 
-        public bool AddBuildingsToLocations { get; set; }
-
-        public MachinesProcessor(ILocationHelper locationHelper, IMachinesProcessorConfiguration config, IMachineHelper machineHelper, ILog logger, IItemFinder finder)
+        public MachinesProcessor(ILocationHelper locationHelper, IMachinesProcessorConfiguration config, IMachineHelper machineHelper, ILog logger, IItemFinder finder, ISoundHelper soundHelper)
         {
-            AddBuildingsToLocations = config.AddBuildingsToLocations;
             _machineNamesToProcess = config.GetMachineNamesToProcess();
             _gameLocationsToSearch = config.GetLocationsToSearch();
             _gameLocationsToSearch.ForEach(gl => _connectedChestsCache.Add(gl, new Dictionary<Vector2, Chest>()));
             _locationHelper = locationHelper;
+            _config = config;
             _machineHelper = machineHelper;
             _logger = logger;
             _finder = finder;
+            _soundHelper = soundHelper;
             DailyReset();
         }
 
         private IEnumerable<GameLocation> GetLocations()
         {
             var configuredNames = _gameLocationsToSearch.Select(Game1.getLocationFromName);
-            if (AddBuildingsToLocations)
+            if (_config.AddBuildingsToLocations)
             {
                 return configuredNames.Concat(Game1.getFarm().buildings.Where(b => b.indoors != null).Select(b=>b.indoors));
             }
@@ -65,6 +66,7 @@ namespace FarmAutomation.ItemCollector.Processors
                     {
                         new ConnectedTile {Location = location, Object = valuePair.Value}
                     };
+
                     _finder.FindConnectedLocations(gameLocation, location, processedLocations);
                     var chest = processedLocations.FirstOrDefault(c => c.Chest != null)?.Chest;
                     foreach (var connectedLocation in processedLocations)
@@ -95,6 +97,10 @@ namespace FarmAutomation.ItemCollector.Processors
             {
                 _connectedChestsCache = new Dictionary<string, Dictionary<Vector2, Chest>>();
                 Parallel.ForEach(GetLocations(), BuildCacheForLocation);
+            }
+            if (_config.MuteWhileCollectingFromMachines > 0 && _config.MuteWhileCollectingFromMachines <= 5000)
+            {
+                _soundHelper.MuteTemporary(_config.MuteWhileCollectingFromMachines);
             }
             foreach (var gameLocation in GetLocations())
             {

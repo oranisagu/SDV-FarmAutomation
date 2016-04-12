@@ -6,5 +6,6 @@ namespace FarmAutomation.Common.Interfaces
     {
         List<string> GetConnectorItems();
         List<int> FlooringsToConsiderConnectors { get; set; }
+        bool AllowDiagonalConnectionsForAllItems { get; set; }
     }
 }

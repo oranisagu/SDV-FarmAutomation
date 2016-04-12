@@ -6,24 +6,24 @@ namespace FarmAutomation.ItemCollector.Processors
 {
     public class MaterialHelper : IMaterialHelper
     {
-        private readonly ItemConfiguration _items;
+        private readonly IMaterialHelperConfiguration _items;
 
-        public MaterialHelper(ItemConfiguration items)
+        public MaterialHelper(IMaterialHelperConfiguration items)
         {
             _items = items;
-            }
+        }
 
         public IEnumerable<Refillable> FindMaterialForMachine(string machineName, Chest chest)
-            {
+        {
             if (chest == null)
             {
-                    return null;
+                return null;
             }
 
             if (_items.MachineRefillables.ContainsKey(machineName))
-        {
-                return _items.MachineRefillables[machineName].Select(mr=> mr.GetMatchingRefillables(chest)).FirstOrDefault();
-        }
+            {
+                return _items.MachineRefillables[machineName].Select(mr => mr.GetMatchingRefillables(chest)).FirstOrDefault();
+            }
             return null;
         }
     }

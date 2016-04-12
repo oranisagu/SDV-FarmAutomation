@@ -15,11 +15,13 @@ namespace FarmAutomation.Common
     {
         private readonly IItemFinderConfiguration _config;
         private readonly ILocationHelper _locationHelper;
+        private readonly bool _allowDiagonalConnectionsForAllItems;
 
         public ItemFinder(IItemFinderConfiguration config, ILocationHelper locationHelper)
         {
             _config = config;
             _locationHelper = locationHelper;
+            _allowDiagonalConnectionsForAllItems = config.AllowDiagonalConnectionsForAllItems;
         }
 
         private IEnumerable<Object> FindItemsofType(GameLocation location, Type itemType)
@@ -44,7 +46,7 @@ namespace FarmAutomation.Common
         public void FindConnectedLocations(GameLocation location, Vector2 startPosition,
             List<ConnectedTile> processedLocations)
         {
-            var adjecantTiles = GetAdjecantTiles(location, startPosition);
+            var adjecantTiles = GetAdjecantTiles(location, startPosition, _allowDiagonalConnectionsForAllItems);
             foreach (var adjecantTile in adjecantTiles.Where(t => processedLocations.All(l => l.Location != t)))
             {
                 Object item = null;
@@ -88,13 +90,13 @@ namespace FarmAutomation.Common
         }
 
 
-        private IEnumerable<Vector2> GetAdjecantTiles(GameLocation location, Vector2 startPosition)
+        private IEnumerable<Vector2> GetAdjecantTiles(GameLocation location, Vector2 startPosition, bool allowDiagonals = false)
         {
             for (int x = -1; x <= 1; ++x)
             {
                 for (int y = -1; y <= 1; ++y)
                 {
-                    if (y == x || y == -x)
+                    if (!_allowDiagonalConnectionsForAllItems && (y == x || y == -x))
                     {
                         //ignore diagonals
                         continue;

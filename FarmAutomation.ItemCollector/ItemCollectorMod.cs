@@ -31,12 +31,15 @@ namespace FarmAutomation.ItemCollector
 
                 _config = container.Resolve<IConfigurator>().LoadConfiguration<ItemCollectorConfiguration>();
                 container.Register(Component.For(
-                    typeof (IMachinesProcessorConfiguration),
-                    typeof (IAnimalHouseProcessorConfiguration),
-                    typeof (ItemCollectorConfiguration),
-                    typeof (IMachinesProcessorConfiguration),
-                    typeof (IItemFinderConfiguration)
+                    typeof(IMachinesProcessorConfiguration),
+                    typeof(IAnimalHouseProcessorConfiguration),
+                    typeof(ItemCollectorConfiguration),
+                    typeof(IMachinesProcessorConfiguration),
+                    typeof(IItemFinderConfiguration)
                     ).Instance(_config));
+
+                var itemConfig = container.Resolve<IConfigurator>().LoadConfiguration<ItemConfiguration>();
+                container.Register(Component.For<IMaterialHelperConfiguration>().Instance(itemConfig));
 
                 _logger = container.Resolve<ILog>();
                 _machinesProcessor = container.Resolve<IMachinesProcessor>();
