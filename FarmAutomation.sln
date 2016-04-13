@@ -21,6 +21,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScript
 		createReleaseZip.ps1 = createReleaseZip.ps1
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Help", "Help", "{D470AD3E-F345-4361-9C4B-746D908FCAFC}"
+	ProjectSection(SolutionItems) = preProject
+		Help\Basic Connection.gif = Help\Basic Connection.gif
+		Help\Floor Connection.gif = Help\Floor Connection.gif
+		Help\Simple connection setup.png = Help\Simple connection setup.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -45,5 +52,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{860FCDE7-884A-4401-AE7A-41E1444447C5} = {3EF7DE83-50C5-4E86-8888-7BDDD3FF0C27}
+		{D470AD3E-F345-4361-9C4B-746D908FCAFC} = {3EF7DE83-50C5-4E86-8888-7BDDD3FF0C27}
 	EndGlobalSection
 EndGlobal
