@@ -1,4 +1,14 @@
 # Stardew Valley Farm Automation Mods
+
+#### Quick Links:
+[Download](https://github.com/oranisagu/SDV-FarmAutomation/releases/latest)
+[F.A.Q](#FAQ)
+[Setup](#Setup)
+[Item Collector](#ItemCollector)
+[Automated Barn Doors](#BarnDoorAutomation)
+[Feedback](#Feedback)
+[History](#History)
+
 ## Introduction
 The purpose of these mods is to save you time doing tedious task without being completely unfair/cheating. Whether something is an unfair advantage or not is of course subjective, which is why you can disable various features. The goal is to make the game more enjoyable for you by removing aspects you find tedious or unfun.
 
@@ -18,6 +28,7 @@ I'm looking into finding a definitive solution for this issue, but for now, if y
 ### Download
 You can download the compiled mods under [latest releases](https://github.com/oranisagu/SDV-FarmAutomation/releases/latest).
 
+<a name="FAQ" />
 ### Frequently asked Questions
 **Q:** Machine X does not take any items from a chest
 
@@ -50,6 +61,7 @@ ___
 ## The Mods
 The following mods are currently part of this project:
 
+<a name="ItemCollector" />
 ### ItemCollector
 This is the main mod of this project. it's purpose is to collect items from your barns, coops and machines (in various locations) and put them in nearby chests. If the chest contains appropriate raw materials (for example for Kegs it would be Fruit or Wheat or Hops), it will also immediately refill the machine with the first matching item in the chest. if, for example you have a keg farm somewhere, just put enough fruit into the chest and it should automatically create wine for you. This alleviates the tiresome running around refilling your machines.
 
@@ -62,18 +74,39 @@ the installation is simple, download the zipfile and extract it into your mods f
 
 #### Configuration (Important!)
 read the configuration file first and disable any machines or floorings you might not want. if you're unsure, don't run the mod without making a backup until it's in a more stable state.
+<a name="Setup" />
+#### Setup
+The easiest setup imaginable is just placing a chest near a machine:
 
+![Basic Connection](https://raw.githubusercontent.com/oranisagu/SDV-FarmAutomation/master/Help/Basic%20Connection.gif)
+
+As you can see, if you put materials into the chest, the machine next to it will use those materials and return the finished items, in this case a Copper Bar, back into the Chest.
+The Machine will continue to work as long as there are materials in the chest.
+
+But usually you don't just have one machine. You can place as many machines and connect them to one of your chests. Even different machines.
+The following setup for example shows how you can setup multiple machines and connect them with a Wood Path to your chest.
+
+![Simple Connection](https://raw.githubusercontent.com/oranisagu/SDV-FarmAutomation/master/Help/Simple%20connection%20setup.png)
+
+In action:
+
+![Simple Connection in Action](https://raw.githubusercontent.com/oranisagu/SDV-FarmAutomation/master/Help/Floor%20Connection.gif)
+
+<a name="BarnDoorAutomation" />
 ### BarnDoorAutomation
 This mod simply opens and closes the barn doors at configurable times. there is already another mod doing this so unless you have problems with that one, this probably won't help you much.
 
 #### Installation
 the installation is simple, download the zipfile and extract it into your mods folder (either %AppData%\StardewValley\Mods\ or the games installation directory) and start SMAPI. There are some configuration options, though you can probably leave those at their defaults.
 
+
+<a name="Feedback" />
 ## Feedback
 Feedback is very appreciated as there are so many situations I can't account for. If you have problems, consider sending me your savefile so I can look into it.
 
 There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-farmautomation-mods-for-smapi-0-39-2.111931), where you can leave suggestions or bug reports.
 
+<a name="History" />
 ## Version History
 #### [0.2.2](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.2.2)
 * Crab Pots got stuck after being connected (until at least one day passed without being connected)
