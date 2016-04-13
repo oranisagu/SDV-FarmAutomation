@@ -66,8 +66,11 @@ namespace FarmAutomation.ItemCollector.Processors
                         // item was not accepted by the machine, transfer it back to the chest
                         Who.items.ForEach(i => connectedChest.addItem(i));
                     }
+                    else
+                    {
+                        Log.Info($"Refilled your {machine.Name} with a {refillable.Name} of {(ItemQuality)refillable.quality} quality. The machine now takes {machine.minutesUntilReady} minutes to process. You have {refillable.Stack} {refillable.Name} left");
+                    }
                     Who.ClearInventory();
-                    Log.Info($"Refilled your {machine.Name} with a {refillable.Name} of {(ItemQuality)refillable.quality} quality. The machine now takes {machine.minutesUntilReady} minutes to process. You have {refillable.Stack} {refillable.Name} left");
                 }
             }
         }
