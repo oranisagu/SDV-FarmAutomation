@@ -59,15 +59,18 @@ namespace FarmAutomation.ItemCollector.Processors
                 if (refillable != null)
                 {
                     var dropIn = refillable.First();
-                    var tempItems = refillable.Select(r=>MoveItemsToFarmer(r, connectedChest, Who)).ToList();
+                    var tempItems = refillable.Select(r => MoveItemsToFarmer(r, connectedChest, Who)).ToList();
 
                     if (!PutItemInMachine(machine, tempItems.First(), Who))
                     {
                         // item was not accepted by the machine, transfer it back to the chest
                         Who.items.ForEach(i => connectedChest.addItem(i));
                     }
+                    else
+                    {
+                        _logger.Info($"Refilled your {machine.Name} with a {dropIn.Name} of {(ItemQuality)tempItems.First().quality} quality. The machine now takes {machine.minutesUntilReady} minutes to process.");
+                    }
                     Who.ClearInventory();
-                    _logger.Info($"Refilled your {machine.Name} with a {dropIn.Name} of {(ItemQuality)tempItems.First().quality} quality. The machine now takes {machine.minutesUntilReady} minutes to process.");
                 }
             }
         }
@@ -76,7 +79,7 @@ namespace FarmAutomation.ItemCollector.Processors
         {
             var itemToMove = connectedChest.items.OfType<Object>().FirstOrDefault(refillable.ObjectSatisfiesRefillable);
             if (itemToMove == null)
-        {
+            {
                 return null;
             }
             var temporaryItem = (Object)itemToMove.getOne();

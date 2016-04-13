@@ -29,6 +29,7 @@ namespace FarmAutomation.Common
         {
             ClearInventory();
             uniqueMultiplayerID = Game1.player.uniqueMultiplayerID;
+            professions = Game1.player.professions;
             FarmerSprite.setOwner(this);
             maxItems = 24;
         }
