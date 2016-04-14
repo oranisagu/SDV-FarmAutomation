@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework.Content;
 using StardewValley;
 using StardewValley.Objects;
 using Object = StardewValley.Object;
@@ -13,6 +16,8 @@ namespace FarmAutomation.ItemCollector.Processors
             Object.gold,
             Object.iridium
         };
+
+        private int[] _seedmakerDropIns;
 
         public Object FindMaterialForMachine(string machineName, Chest chest)
         {
@@ -61,10 +66,16 @@ namespace FarmAutomation.ItemCollector.Processors
 
         private bool IsSeedMakerMaterial(Item item)
         {
-            return item.category == Object.VegetableCategory 
-                || item.category == Object.GreensCategory 
-                || item.category == Object.FruitsCategory
-                || item.category == Object.flowersCategory;
+            if (_seedmakerDropIns == null)
+            {
+                if (Game1.temporaryContent == null)
+                {
+                    Game1.temporaryContent = new ContentManager(Game1.content.ServiceProvider, Game1.content.RootDirectory);
+                }
+                Dictionary<int, string> dictionary = Game1.temporaryContent.Load<Dictionary<int, string>>("Data\\Crops");
+                _seedmakerDropIns = dictionary.Values.Select(v => v.Split('/')).Select(s => Convert.ToInt32(s[3])).ToArray();
+            }
+            return _seedmakerDropIns.Contains(item.parentSheetIndex);
         }
 
         /// <summary>
