@@ -34,13 +34,44 @@ namespace FarmAutomation.ItemCollector.Processors
 
         public IEnumerable<GameLocation> GetLocations()
         {
-            var configuredNames = _gameLocationsToSearch.Select(Game1.getLocationFromName);
+            List<GameLocation> gameLocations = new List<GameLocation>();
+            lock (_gameLocationsToSearch)
+            {
+                foreach (var locationName in _gameLocationsToSearch)
+                {
+                    var location = Game1.getLocationFromName(locationName);
+                    if (location != null)
+                    {
+                        gameLocations.Add(location);
+                    }
+                }
+            }
             if (AddBuildingsToLocations)
             {
-                return configuredNames.Concat(Game1.getFarm().buildings.Where(b => b.indoors != null).Select(b=>b.indoors));
+                return gameLocations.Concat(Game1.getFarm().buildings.Where(b => b.indoors != null).Select(b => b.indoors));
             }
-            return configuredNames;
+            return gameLocations;
         }
+
+        public void ValidateGameLocations()
+        {
+            var locations = string.Join(", ", Game1.locations.Select(l => l.Name));
+            Log.Info($"Loading locations. These are all the currently known locations in the game:\r\n{locations}");
+
+            lock (_gameLocationsToSearch)
+            {
+                foreach (var locationName in _gameLocationsToSearch.ToList())
+                {
+                    var location = Game1.getLocationFromName(locationName);
+                    if (location == null)
+                    {
+                        Log.Error($"Could not find a location with the name of '{locationName}'");
+                        _gameLocationsToSearch.Remove(locationName);
+                    }
+                }
+            }
+        }
+
 
         private void BuildCacheForLocation(GameLocation gameLocation)
         {

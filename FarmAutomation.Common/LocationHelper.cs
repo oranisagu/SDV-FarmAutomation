@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewValley;
 
 namespace FarmAutomation.Common
 {
     public class LocationHelper
     {
-        public static String GetName(GameLocation location)
+        public static string GetName(GameLocation location)
         {
             return location.uniqueName ?? location.Name;
         }
@@ -22,6 +21,6 @@ namespace FarmAutomation.Common
                 return true;
             }
             return false;
-    }
+        }
     }
 }

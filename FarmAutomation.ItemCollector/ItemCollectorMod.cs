@@ -46,9 +46,9 @@ namespace FarmAutomation.ItemCollector
                 if (_config.EnableMod)
                 {
                     Log.Debug("It's a new day. Resetting the Item Collector mod");
+                    _machinesProcessor.ValidateGameLocations();
                     _animalHouseProcessor.DailyReset();
                     _machinesProcessor.DailyReset();
-
                 }
             };
             TimeEvents.TimeOfDayChanged += (s, e) =>

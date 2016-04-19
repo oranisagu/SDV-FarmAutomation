@@ -108,6 +108,11 @@ There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-fa
 
 <a name="History" />
 ## Version History
+#### [0.2.3](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.2.3)
+* The Seedmaker now supports all crops in the games crop directory (mainly a fix for gemberries, but it should also fix newly added crops as long as they've been put into the Data\Crops file)
+* If an invalid location name is added to 'LocationsToSearch', the game will no longer crash and instead log an error.
+* After loading a game the mod will output a full list of all known locations, so the exact names of custom locations can be easier found. 
+
 #### [0.2.2](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.2.2)
 * Crab Pots got stuck after being connected (until at least one day passed without being connected)
 * Crab Pots took bait when the player already had the Luremaster profession.
