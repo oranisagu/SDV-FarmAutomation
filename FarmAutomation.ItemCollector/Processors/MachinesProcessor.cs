@@ -43,12 +43,14 @@ namespace FarmAutomation.ItemCollector.Processors
                     if (location != null)
                     {
                         gameLocations.Add(location);
+
+                        var farm = location as Farm;
+                        if (farm != null && AddBuildingsToLocations)
+                        {
+                            gameLocations.AddRange(farm.buildings.Where(building => building?.indoors != null).Select(building => building.indoors));
+                        }
                     }
                 }
-            }
-            if (AddBuildingsToLocations)
-            {
-                return gameLocations.Concat(Game1.getFarm().buildings.Where(b => b.indoors != null).Select(b => b.indoors));
             }
             return gameLocations;
         }

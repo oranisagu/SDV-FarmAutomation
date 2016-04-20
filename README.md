@@ -108,6 +108,9 @@ There's also my [Forum Post](http://community.playstarbound.com/threads/alpha-fa
 
 <a name="History" />
 ## Version History
+#### [0.2.4](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.2.4)
+* Custom Farm extensions are now supported for collecting from animals as well as machines inside buildings on those new locations (outside already worked)
+
 #### [0.2.3](https://github.com/oranisagu/SDV-FarmAutomation/releases/tag/v0.2.3)
 * The Seedmaker now supports all crops in the games crop directory (mainly a fix for gemberries, but it should also fix newly added crops as long as they've been put into the Data\Crops file)
 * If an invalid location name is added to 'LocationsToSearch', the game will no longer crash and instead log an error.
