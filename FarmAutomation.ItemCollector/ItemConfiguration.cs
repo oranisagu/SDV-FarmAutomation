@@ -44,6 +44,12 @@ namespace FarmAutomation.ItemCollector
                 }
             };
             MachineRefillables.Add("Furnace", furnaceRefillables);
+
+            List<Refillable> crabPotRefillables = new List<Refillable>
+            {
+                new Refillable("Bait")
+            };
+            MachineRefillables.Add("Crab Pot", crabPotRefillables);
         }
     }
 }

@@ -1,0 +1,87 @@
+﻿{
+  "FloorTiles": [
+    {
+      "Name": "Wood Floor",
+      "FlooringType": 0,
+      "InventoryItemId": 328
+    },
+    {
+      "Name": "Stone Floor",
+      "FlooringType": 1,
+      "InventoryItemId": 329
+    },
+    {
+      "Name": "Weathered Floor",
+      "FlooringType": 2,
+      "InventoryItemId": 331
+    },
+    {
+      "Name": "Crystal Floor",
+      "FlooringType": 3,
+      "InventoryItemId": 333
+    },
+    {
+      "Name": "Straw Floor",
+      "FlooringType": 4,
+      "InventoryItemId": 401
+    },
+    {
+      "Name": "Gravel Path",
+      "FlooringType": 5,
+      "InventoryItemId": 407
+    },
+    {
+      "Name": "Wood Path",
+      "FlooringType": 6,
+      "InventoryItemId": 405
+    },
+    {
+      "Name": "Crystal Path",
+      "FlooringType": 7,
+      "InventoryItemId": 409
+    },
+    {
+      "Name": "Cobblestone Path",
+      "FlooringType": 8,
+      "InventoryItemId": 411
+    },
+    {
+      "Name": "Stepping Stone Path",
+      "FlooringType": 9,
+      "InventoryItemId": 415
+    }
+  ],
+  "MachineRefillables": {
+    "Furnace": [
+      {
+        "Name": "Iron Ore",
+        "AmountNeeded": 5,
+        "DependingItems": [
+          {
+            "Name": "Coal",
+            "AmountNeeded": 1,
+            "DependingItems": [ ]
+          }
+        ]
+      },
+      {
+        "Name": "Copper Ore",
+        "AmountNeeded": 5,
+        "DependingItems": [
+          {
+            "Name": "Coal",
+            "AmountNeeded": 1,
+            "DependingItems": [ ]
+          }
+        ]
+      }
+    ],
+    "Crab Pot": [
+      {
+        "Name": "Bait",
+        "AmountNeeded": 1,
+        "DependingItems": [ ]
+      }
+    ]
+  }
+}
