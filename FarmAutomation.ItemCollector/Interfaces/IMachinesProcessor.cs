@@ -7,5 +7,6 @@ namespace FarmAutomation.ItemCollector.Interfaces
         void DailyReset();
         void ProcessMachines();
         void InvalidateCacheForLocation(GameLocation currentLocation);
+        void ValidateGameLocations();
     }
 }

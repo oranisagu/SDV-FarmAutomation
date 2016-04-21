@@ -38,13 +38,46 @@ namespace FarmAutomation.ItemCollector.Processors
 
         private IEnumerable<GameLocation> GetLocations()
         {
-            var configuredNames = _gameLocationsToSearch.Select(Game1.getLocationFromName);
-            if (_config.AddBuildingsToLocations)
+            List<GameLocation> gameLocations = new List<GameLocation>();
+            lock (_gameLocationsToSearch)
             {
-                return configuredNames.Concat(Game1.getFarm().buildings.Where(b => b.indoors != null).Select(b=>b.indoors));
+                foreach (var locationName in _gameLocationsToSearch)
+                {
+                    var location = Game1.getLocationFromName(locationName);
+                    if (location != null)
+                    {
+                        gameLocations.Add(location);
+
+                        var farm = location as Farm;
+                        if (farm != null && _config.AddBuildingsToLocations)
+                        {
+                            gameLocations.AddRange(farm.buildings.Where(building => building?.indoors != null).Select(building => building.indoors));
+                        }
+                    }
+                }
             }
-            return configuredNames;
+            return gameLocations;
         }
+
+        public void ValidateGameLocations()
+        {
+            var locations = string.Join(", ", Game1.locations.Select(l => l.Name));
+            _logger.Info($"Loading locations. These are all the currently known locations in the game:\r\n{locations}");
+
+            lock (_gameLocationsToSearch)
+            {
+                foreach (var locationName in _gameLocationsToSearch.ToList())
+                {
+                    var location = Game1.getLocationFromName(locationName);
+                    if (location == null)
+                    {
+                        _logger.Error($"Could not find a location with the name of '{locationName}'");
+                        _gameLocationsToSearch.Remove(locationName);
+                    }
+                }
+            }
+        }
+
 
         private void BuildCacheForLocation(GameLocation gameLocation)
         {

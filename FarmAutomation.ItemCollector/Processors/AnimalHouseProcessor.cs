@@ -50,7 +50,6 @@ namespace FarmAutomation.ItemCollector.Processors
 
         public void ProcessAnimalBuildings()
         {
-            var farm = Game1.getFarm();
             if (_dailiesDone)
             {
                 return;
@@ -60,73 +59,80 @@ namespace FarmAutomation.ItemCollector.Processors
                 _soundHelper.MuteTemporary(1500);
             }
             _logger.Info("Petting animals and processing their buildings to collect items");
-            if (_configuration.PetAnimals)
+            var farms = Game1.locations.OfType<Farm>();
+            foreach (var farm in farms)
             {
-                var allAnimals = farm.animals.Values.Concat(farm.buildings.Where(b => b.indoors is AnimalHouse).SelectMany(i => ((AnimalHouse)i.indoors).animals.Values));
-                foreach (var animal in allAnimals)
+                if (_configuration.PetAnimals)
                 {
-                    PetAnimal(animal);
-                }
-                _logger.Info("All animals have been petted.");
-            }
-            foreach (var building in farm.buildings)
-            {
-                var chest = _itemFinder.FindChestInLocation(building.indoors);
-                if (chest == null)
-                {
-                    continue;
-                }
-                if (building is Coop)
-                {
-                    // collect eggs
-                    CollectItemsFromBuilding(building, chest, _coopCollectibles);
-                }
-                if (building is Barn)
-                {
-                    int outsideAnimalCount = 0;
-                    foreach (var outsideAnimal in farm.animals.Values.Where(a => a.home is Barn && a.home == building))
+                    var allAnimals =
+                        farm.animals.Values.Concat(
+                            farm.buildings.Where(b => b.indoors is AnimalHouse)
+                                .SelectMany(i => ((AnimalHouse)i.indoors).animals.Values));
+                    foreach (var animal in allAnimals)
                     {
-                        CollectBarnAnimalProduce(outsideAnimal, chest);
-                        ++outsideAnimalCount;
+                        PetAnimal(animal);
                     }
-                    if (outsideAnimalCount > 0)
-                    {
-                        _logger.Debug($"Found {outsideAnimalCount} animals wandering outside. collected their milk or wool and put it in the chest in their {building.buildingType}");
-                    }
-                    int insideAnimalCount = 0;
-                    foreach (var animal in ((AnimalHouse)building.indoors).animals.Values)
-                    {
-                        CollectBarnAnimalProduce(animal, chest);
-                        ++insideAnimalCount;
-                    }
-                    if (insideAnimalCount > 0)
-                    {
-                        _logger.Debug($"Found {insideAnimalCount} animals in the {building.buildingType}. Collected their milk or wool and put it in the chest in their home.");
-                    }
+                    _logger.Info("All animals have been petted.");
                 }
-                if (building.indoors is SlimeHutch)
+                foreach (var building in farm.buildings)
                 {
-                    // collect goop
-                    foreach (var pair in building.indoors.objects.Where(o=>o.Value.Name == "Slime Ball").ToList())
+                    var chest = _itemFinder.FindChestInLocation(building.indoors);
+                    if (chest == null)
                     {
-                        var item = pair.Value;
-                        Random random = new Random((int)(Game1.stats.daysPlayed + (uint)(int)Game1.uniqueIDForThisGame + (uint)((int)item.tileLocation.X * 77) + (uint)((int)item.tileLocation.Y * 777) + 2u));
-                        var number = random.Next(10, 21);
-                        var slimeStack = new Object(SlimeParentSheetIndex, number)
+                        continue;
+                    }
+                    if (building is Coop)
+                    {
+                        // collect eggs
+                        CollectItemsFromBuilding(building, chest, _coopCollectibles);
+                    }
+                    if (building is Barn)
+                    {
+                        int outsideAnimalCount = 0;
+                        foreach (var outsideAnimal in farm.animals.Values.Where(a => a.home is Barn && a.home == building))
                         {
-                            scale = Vector2.Zero,
-                            quality = 0,
-                            isSpawnedObject = false,
-                            isRecipe = false,
-                            questItem = false,
-                            name = "Slime",
-                            specialVariable = 0,
-                            price = 5
-                        };
-                        if (chest.addItem(slimeStack) == null)
+                            CollectBarnAnimalProduce(outsideAnimal, chest);
+                            ++outsideAnimalCount;
+                        }
+                        if (outsideAnimalCount > 0)
                         {
-                            building.indoors.objects.Remove(pair.Key);
-                            _logger.Info($"Collected {number} Slimes from your Slime Hutch");
+                            _logger.Debug($"Found {outsideAnimalCount} animals wandering outside. collected their milk or wool and put it in the chest in their {building.buildingType}");
+                        }
+                        int insideAnimalCount = 0;
+                        foreach (var animal in ((AnimalHouse)building.indoors).animals.Values)
+                        {
+                            CollectBarnAnimalProduce(animal, chest);
+                            ++insideAnimalCount;
+                        }
+                        if (insideAnimalCount > 0)
+                        {
+                            _logger.Debug($"Found {insideAnimalCount} animals in the {building.buildingType}. Collected their milk or wool and put it in the chest in their home.");
+                        }
+                    }
+                    if (building.indoors is SlimeHutch)
+                    {
+                        // collect goop
+                        foreach (var pair in building.indoors.objects.Where(o => o.Value.Name == "Slime Ball").ToList())
+                        {
+                            var item = pair.Value;
+                            Random random = new Random((int)(Game1.stats.daysPlayed + (uint)(int)Game1.uniqueIDForThisGame + (uint)((int)item.tileLocation.X * 77) + (uint)((int)item.tileLocation.Y * 777) + 2u));
+                            var number = random.Next(10, 21);
+                            var slimeStack = new Object(SlimeParentSheetIndex, number)
+                            {
+                                scale = Vector2.Zero,
+                                quality = 0,
+                                isSpawnedObject = false,
+                                isRecipe = false,
+                                questItem = false,
+                                name = "Slime",
+                                specialVariable = 0,
+                                price = 5
+                            };
+                            if (chest.addItem(slimeStack) == null)
+                            {
+                                building.indoors.objects.Remove(pair.Key);
+                                _logger.Info($"Collected {number} Slimes from your Slime Hutch");
+                            }
                         }
                     }
                 }
